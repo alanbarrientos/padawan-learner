@@ -14,64 +14,63 @@ public class SpotifyService {
     @Autowired
     WebClient webClient;
 
-    @GetMapping(value = "/user-top-artists")
-    public String getUserTopArtists() {
-            String resourceUri = "https://api.spotify.com/v1/me/top/artists";
-            String body = webClient
-                    .get()
-                    .uri(resourceUri)
-                    .retrieve()
-                    .bodyToMono(String.class)
-                    .block();
-//            System.out.println(body);
-        return body;
-    }
+//    @GetMapping(value = "/user-top-artists")
+//    public String getUserTopArtists() {
+//            String resourceUri = "https://api.spotify.com/v1/me/top/artists";
+//            String body = webClient
+//                    .get()
+//                    .uri(resourceUri)
+//                    .retrieve()
+//                    .bodyToMono(String.class)
+//                    .block();
+////            System.out.println(body);
+//        return body;
+//    }
     @GetMapping(value = "/user-playlists")
     public String getUserPlaylist() {
-            String resourceUri = "https://api.spotify.com/v1/me/playlists?limit=50";
-            String body = webClient
-                    .get()
-                    .uri(resourceUri)
-                    .retrieve()
-                    .bodyToMono(String.class)
-                    .block();
-//            System.out.println(body);
-            return body;
+        String resourceUri = "https://api.spotify.com/v1/me/playlists?limit=50";
+        String body = webClient
+                .get()
+                .uri(resourceUri)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+//           System.out.println(body);
+        return body;
     }
     @GetMapping(value = "/user-liked/{offset}")
     public String getUserLiked(@PathVariable("offset") Integer listOffset ) {
-            String resourceUri = "https://api.spotify.com/v1/me/tracks?limit=50&offset=" + listOffset;
-            String body = webClient
-                    .get()
-                    .uri(resourceUri)
-                    .retrieve()
-                    .bodyToMono(String.class)
-                    .block();
-            return body;
+        String resourceUri = "https://api.spotify.com/v1/me/tracks?limit=50&offset=" + listOffset;
+        String body = webClient
+                .get()
+                .uri(resourceUri)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+        return body;
     }
 
     @GetMapping(value = "/create-playlist")
     public String createPlaylist() {
-            String resourceUri = "https://api.spotify.com/v1/users/" + getUserId() + "/playlists";
-            String body = webClient
-                    .post()
-                    .uri(resourceUri)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(BodyInserters.fromValue("{\n" +
-                            "    \"name\": \"New Playlist\",\n" +
-                            "    \"description\": \"New playlist description\",\n" +
-                            "    \"public\": false\n" +
-                            "}"))
-                    .retrieve()
-                    .bodyToMono(String.class)
-                    .block();
-            System.out.println(body);
-            return body;
+        String resourceUri = "https://api.spotify.com/v1/users/" + getUserId() + "/playlists";
+        String body = webClient
+                .post()
+                .uri(resourceUri)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue("{\n" +
+                        "    \"name\": \"New Playlist\",\n" +
+                        "    \"description\": \"New playlist description\",\n" +
+                        "    \"public\": false\n" +
+                        "}"))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+        System.out.println(body);
+        return body;
     }
 
-    @GetMapping(value = "/add-music-in-playlist")
-    public String addMusicToPlaylist() {
-        String playlistId = "1aMxMiOZSzvpIiKFMcQAhn";
+    @GetMapping(value = "/add-music-in-playlist/{playlistid}")
+    public String addMusicToPlaylist(@PathVariable("playlistid") String playlistId) {
         String resourceUri = "https://api.spotify.com/v1/playlists/" + playlistId + "/tracks";
         String body = webClient
                 .post()
@@ -92,9 +91,8 @@ public class SpotifyService {
 
 
 
-    @GetMapping(value = "/musics-of-playlist")
-    public String getMusicsFromPlaylist() {
-        String playlistId = "5UKOxOFaLPHX4kpNfiNiQe";
+    @GetMapping(value = "/musics-of-playlist/{playlistid}")
+    public String getMusicsFromPlaylist(@PathVariable("playlistid") String playlistId) {
         String resourceUri = "https://api.spotify.com/v1/playlists/" + playlistId + "/tracks";
         String body = webClient
                 .get()
@@ -106,9 +104,8 @@ public class SpotifyService {
     }
 
 
-    @GetMapping(value = "/delete-playlist")
-    public String deletePlaylist() {
-        String playlistId = "1aMxMiOZSzvpIiKFMcQAhn ";
+    @GetMapping(value = "/delete-playlist/{playlistid}")
+    public String deletePlaylist(@PathVariable("playlistid") String playlistId) {
         String resourceUri = "https://api.spotify.com/v1/playlists/" + playlistId + "/followers";
         String body = webClient
                 .delete()
@@ -137,23 +134,23 @@ public class SpotifyService {
 //    }
 
     public String getUserId() {
-            String resourceUri = "https://api.spotify.com/v1/me";
-            String body = webClient
-                    .get()
-                    .uri(resourceUri)
-                    .retrieve()
-                    .bodyToMono(String.class)
-                    .block();
-            String pattern = "\"id\"\\s*:\\s*\"([^\"]+)\"";
+        String resourceUri = "https://api.spotify.com/v1/me";
+        String body = webClient
+                .get()
+                .uri(resourceUri)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
 
-            Pattern regex = Pattern.compile(pattern);
-            Matcher matcher = regex.matcher(body);
+        String pattern = "<b>.*</b><br>\\n.*\\n.*\\n.*\\n.*\\n((?s)^.*)</div>\\n\\n<br><br>";
 
-            if (matcher.find()) {
-                String id = matcher.group(1);
-                System.out.println(id);
-                return id;
-            }
-            return null;
+        Pattern regex = Pattern.compile(pattern);
+        Matcher matcher = regex.matcher(body);
+        if (matcher.find()) {
+            String id = matcher.group(1);
+            System.out.println(id);
+            return id;
+        }
+        return null;
     }
 }
