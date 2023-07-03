@@ -142,7 +142,7 @@ public class SpotifyService {
                 .bodyToMono(String.class)
                 .block();
 
-        String pattern = "<b>.*</b><br>\\n.*\\n.*\\n.*\\n.*\\n((?s)^.*)</div>\\n\\n<br><br>";
+        String pattern = "\"id\"\\s*:\\s*\"([^\"]+)\"";
 
         Pattern regex = Pattern.compile(pattern);
         Matcher matcher = regex.matcher(body);
