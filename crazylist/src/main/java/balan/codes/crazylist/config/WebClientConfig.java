@@ -23,7 +23,7 @@ public class WebClientConfig {
                         .authorizationCode()
                         .refreshToken()
                         .build();
-        System.out.println("I AM OAUTH2 AUTHORIZED CLIENT MANAGER");
+        System.out.println("I AM OAUTH2 AUTHORIZED CLIENT MANAGER ");
 
         DefaultOAuth2AuthorizedClientManager authorizedClientManager =
                 new DefaultOAuth2AuthorizedClientManager(
@@ -44,6 +44,7 @@ public class WebClientConfig {
         oauth2Client.setDefaultClientRegistrationId("spotify");
         System.out.println("I AM WEBCLIENT");
         return WebClient.builder()
+                .baseUrl("https://api.spotify.com/v1")
                 .apply(oauth2Client.oauth2Configuration())
                 .build();
     }

@@ -2,11 +2,15 @@ package balan.codes.crazylist.rest;
 
 
 import okhttp3.*;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
-
+@Component
 public class ShazamService {
+    @Value("${shazam.token}")
+    private static String API_KEY;
     public static void main(String[] args) throws IOException {
         callShazam();
 //        cutMusic();
@@ -37,7 +41,7 @@ public class ShazamService {
     }
     private static void callShazam() {
         String url = "https://shazam-core.p.rapidapi.com/v1/tracks/recognize";
-        String apiKey = "076f560fa8msh7c3ec65f7ee1a87p17ac3cjsne2a9d285bbad";
+//        String apiKey = apikey;
 
         OkHttpClient client = new OkHttpClient();
 //        "subject":" this is the way to find the music
@@ -52,7 +56,7 @@ public class ShazamService {
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
-                .addHeader("X-RapidAPI-Key", apiKey)
+                .addHeader("X-RapidAPI-Key", API_KEY)
                 .addHeader("X-RapidAPI-Host", "shazam-core.p.rapidapi.com")
                 .build();
 
