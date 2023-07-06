@@ -10,7 +10,7 @@ import java.io.IOException;
 @Component
 public class ShazamService {
     @Value("${shazam.token}")
-    private static String API_KEY;
+    private static  String API_KEY;
     public static void main(String[] args) throws IOException {
         callShazam();
 //        cutMusic();
