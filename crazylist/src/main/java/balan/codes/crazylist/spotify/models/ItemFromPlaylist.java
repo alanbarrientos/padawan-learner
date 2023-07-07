@@ -20,4 +20,24 @@ public class ItemFromPlaylist {
     public Tracks tracks;
     public String type;
     public String uri;
+
+    @Override
+    public String toString() {
+        return "ItemFromPlaylist{" +
+                "collaborative=" + collaborative +
+                ", description='" + description + '\'' +
+                ", external_urls=" + external_urls +
+                ", href='" + href + '\'' +
+                ", id='" + id + '\'' +
+                ", images=" + images +
+                ", name='" + name + '\'' +
+                ", owner=" + owner +
+                ", primary_color=" + primary_color +
+                ", mypublic=" + mypublic +
+                ", snapshot_id='" + snapshot_id + '\'' +
+                ", tracks=" + tracks +
+                ", type='" + type + '\'' +
+                ", uri='" + uri + '\'' +
+                '}';
+    }
 }

@@ -1,4 +1,4 @@
-package balan.codes.crazylist.lyricsProvider;
+package balan.codes.crazylist.lyricsprovider;
 
 import org.springframework.stereotype.Component;
 

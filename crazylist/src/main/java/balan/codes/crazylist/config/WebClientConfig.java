@@ -9,6 +9,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
@@ -37,6 +38,11 @@ public class WebClientConfig {
 
     @Bean
     public WebClient webClient(OAuth2AuthorizedClientManager authorizedClientManager) {
+        final int size = 1 * 1024 * 1024;
+        final ExchangeStrategies strategies = ExchangeStrategies.builder()
+                .codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(size))
+                .build();
+
 
         ServletOAuth2AuthorizedClientExchangeFilterFunction oauth2Client =
                 new ServletOAuth2AuthorizedClientExchangeFilterFunction(authorizedClientManager);
@@ -45,6 +51,7 @@ public class WebClientConfig {
         System.out.println("I AM WEBCLIENT");
         return WebClient.builder()
                 .baseUrl("https://api.spotify.com/v1")
+                .exchangeStrategies(strategies)
                 .apply(oauth2Client.oauth2Configuration())
                 .build();
     }
