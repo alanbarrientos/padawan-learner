@@ -1,10 +1,10 @@
-package balan.codes.crazylist.spotify.models;
+package balan.codes.crazylist.spotify.dto;
 
 import java.util.ArrayList;
 
-public class TracksFromPlaylistCreated {
+public class RootFromPlaylist {
     public String href;
-    public ArrayList<Object> items;
+    public ArrayList<ItemFromPlaylist> items;
     public int limit;
     public Object next;
     public int offset;

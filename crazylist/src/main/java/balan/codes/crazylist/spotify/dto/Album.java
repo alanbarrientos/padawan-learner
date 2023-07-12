@@ -1,9 +1,6 @@
-package balan.codes.crazylist.spotify.models;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
+package balan.codes.crazylist.spotify.dto;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Album {
     public String album_type;

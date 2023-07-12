@@ -1,4 +1,4 @@
-package balan.codes.crazylist.spotify.models;
+package balan.codes.crazylist.spotify.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -14,7 +14,7 @@ public class SpotifyApiTest {
 
     @Test
     public void shouldGiveMeLyricsAndReleaseDate(){
-        ShazamMetadata shazamMetadata = shazamApi.getMetadataSong("Gambare Gambare Senpai - Full Tiktok VER Tyo Pla");
+        ShazamMetadata shazamMetadata = shazamApi.getMetadataSong("Who Let The Dogs Out - Baha Men");
         System.out.println(shazamMetadata);
     }
 }

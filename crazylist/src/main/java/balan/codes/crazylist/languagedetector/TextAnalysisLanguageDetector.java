@@ -33,6 +33,7 @@ public class TextAnalysisLanguageDetector implements LanguageDetectorProvider {
             throw new RuntimeException(e);
         }
 //        String body = "{\"text\": \""+ text + "\"}";
+        System.out.println("Before Call LanguageDetector");
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL))
                 .header("content-type", "application/json")
@@ -40,6 +41,7 @@ public class TextAnalysisLanguageDetector implements LanguageDetectorProvider {
                 .header("X-RapidAPI-Host", HOST)
                 .method("POST", HttpRequest.BodyPublishers.ofString(payload))
                 .build();
+        System.out.println("After Call LanguageDetector");
         try {
             HttpResponse<String> response = HttpClient.newHttpClient().send(httpRequest, HttpResponse.BodyHandlers.ofString());
             String responseBody = response.body();
@@ -48,11 +50,7 @@ public class TextAnalysisLanguageDetector implements LanguageDetectorProvider {
 //            System.out.println(texAnalisisResponse);
             System.out.println(language);
             return language;
-        } catch (JsonMappingException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | IOException e) {
             throw new RuntimeException(e);
         }
     }

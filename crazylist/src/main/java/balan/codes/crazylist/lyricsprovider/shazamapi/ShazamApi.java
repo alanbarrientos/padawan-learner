@@ -24,25 +24,24 @@ public class ShazamApi implements LyricsProvider {
     }
 
     public ShazamMetadata getMetadataSong(String songName){
-        songName = songName.replaceAll("(\\()|(\\))","");
+        songName = songName.replaceAll("\\(.*\\)","");
         songName = songName.replaceAll("feat\\.","");
         Integer key = getMusicId(songName);
         if(key == null){
             return new ShazamMetadata();
         }
+        System.out.println("beforeCallShazam");
         String body = HttpRequest.get(LYRICS_URL + key, true,
                 "shazamapiversion", "v3",
                 "video", "v3"
         ).body();
-
+        System.out.println("afterCallShazam");
         RawMetadataModel responseLyrics = null;
         try{
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
             responseLyrics = objectMapper.readValue(body, RawMetadataModel.class);
-        } catch (JsonMappingException e) {
-            throw new RuntimeException(e);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -55,8 +54,10 @@ public class ShazamApi implements LyricsProvider {
         String releaseDate = responseLyrics.releasedate;
         ArrayList<String> lyrics = responseLyrics.sections.get(1).text;
         ShazamMetadata insert = new ShazamMetadata();
-        if(lyrics != null){
-            insert.lyrics = String.join(" ", lyrics);
+        insert.setHaveLyrics(false);
+        if(lyrics != null) {
+            insert.setLyrics(String.join(" ", lyrics));
+            insert.setHaveLyrics(true);
         }
         try{
             insert.releaseDate = new SimpleDateFormat("dd-MM-yyyy").parse(releaseDate);
@@ -77,6 +78,8 @@ public class ShazamApi implements LyricsProvider {
         );
         String responseContentUrl = keySearchResponse.body();
         Integer id = null;
+        System.out.println("This is the response of shazam when get id" + responseContentUrl);
+
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -84,8 +87,11 @@ public class ShazamApi implements LyricsProvider {
             SearchResultModel responseKey = objectMapper.readValue(responseContentUrl, SearchResultModel.class);
             id = Integer.parseInt(responseKey.tracks.hits.get(0).track.key);
         } catch (Exception e) {
-            e.printStackTrace();
-
+                System.out.println("This is the response of shazam when get id" + responseContentUrl);
+                e.printStackTrace();
+        }
+        if(id==null){
+            System.out.println("The id is null");
         }
         return id;
     }

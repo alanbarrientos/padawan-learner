@@ -1,24 +1,19 @@
 package balan.codes.crazylist.spotify;
 
-import balan.codes.crazylist.spotify.models.*;
+import balan.codes.crazylist.spotify.dto.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.util.UriBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @Component
 public class SpotifyApi {
@@ -55,7 +50,7 @@ public class SpotifyApi {
                 )
                 .retrieve()
                 .bodyToMono(String.class)
-                .block();
+                 .block();
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             RootFromPlaylist rootFromMusicOfPlaylist = objectMapper.readValue(body, RootFromPlaylist.class);
@@ -210,21 +205,6 @@ public class SpotifyApi {
             upTo = upTo + 100;
             offset = offset + 100;
         }
-//        boolean isMoreToInsert = true;
-//        int offset = tracksURI.size()-1;
-//        while(isMoreToInsert){
-//            int upTo = offset-100;
-//            if(upTo<0){
-//                isMoreToInsert = false;
-//                upTo=0;
-//            }
-//            List<String> tracksToInsert = new ArrayList<>();
-//            for(int i=offset; i>upTo; i--){
-//                tracksToInsert.add(tracksURI.get(i));
-//            }
-//            insertMusicInternal(playlistId, tracksToInsert);
-//            offset = offset - 100;
-//        }
     }
 
 
@@ -281,7 +261,6 @@ public class SpotifyApi {
         Matcher matcher = regex.matcher(body);
         if (matcher.find()) {
             String id = matcher.group(1);
-            System.out.println(id);
             return id;
         }
         return null;
