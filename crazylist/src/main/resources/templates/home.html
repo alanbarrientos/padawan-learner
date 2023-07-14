@@ -15,7 +15,9 @@ Welcome to the app YOU ARE IN
 <br>
 <br>
 <br>
-<button><a href="http://localhost:8080/org-sync">Org-Sync</a></button><br>
+<p th:text="${orgSyncStatus}" id="orgSyncStatus"></p>
+<p id="org" hidden="true">Organizando...</p>
+<button><a href="http://localhost:8080/clickOrg" th:onclick="showSpin()">Org-Sync</a></button><br>
 <br>
 <br>
 <br>
@@ -24,7 +26,11 @@ Welcome to the app YOU ARE IN
 <button onclick="logout()">Logout</button><br>
 
 
-<script>
+<script th:inline="javascript">
+    setTimeout(() => {window.location.href="http://localhost:8080/org-sync"}, 5000)
+    function showSpin(){
+        document.getElementById("org").hidden = false;
+    }
     addMusic = () => {
         window.location.href = 'http://localhost:8080/add-music-in-playlist/' + document.getElementById('1').value;
     }

@@ -1,0 +1,1 @@
+call ssh root@143.244.163.204 "killall -9 java"

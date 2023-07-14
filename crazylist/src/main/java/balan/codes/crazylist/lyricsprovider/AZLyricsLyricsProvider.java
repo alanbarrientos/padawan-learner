@@ -30,8 +30,13 @@ public class AZLyricsLyricsProvider implements LyricsProvider{
 
     private static final Pattern TOKEN_PATTERN = Pattern.compile("\"value\", \"(.*)\"");
     private String getCsrfToken(){
-        HttpRequest csrfTokenRequest = HttpRequest.get(CSRF_URL);
-        String body = csrfTokenRequest.body();
+        String body = null;
+        try {
+            body = HttpRequest.get(CSRF_URL).readTimeout(2000).body();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        assert body != null;
         Matcher matcher = TOKEN_PATTERN.matcher(body);
         String token = null;
         if(matcher.find()){
@@ -41,7 +46,13 @@ public class AZLyricsLyricsProvider implements LyricsProvider{
     }
 
     private String getBodyListLyricsUrl(String songName, String tokenCsrf){
-        return HttpRequest.get(SEARCH_URL, true, "q", songName, "x", tokenCsrf).body();
+        String body = null;
+        try {
+            body = HttpRequest.get(SEARCH_URL, true, "q", songName, "x", tokenCsrf).readTimeout(2000).body();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return body;
     }
 
     private static final Pattern FIRST_URL_PATTERN = Pattern.compile("href=\"(.*)\">1.");
@@ -55,7 +66,13 @@ public class AZLyricsLyricsProvider implements LyricsProvider{
     }
 
     private String getBodyLyricsPage(String lyricsUrl){
-        return HttpRequest.get(lyricsUrl).body();
+        String body = null;
+        try {
+            body = HttpRequest.get(lyricsUrl).readTimeout(2000).body();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return body;
     }
 
     private static final Pattern LYRICS_CONTENT_PATTERN =

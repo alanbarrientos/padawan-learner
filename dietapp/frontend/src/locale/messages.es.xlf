@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en-US" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="1825746061274171433" datatype="html">
+        <source>Add weight</source>
+        <target>Agregar peso</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/addoredit-weight/add-or-edit-weight.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8858055407970815402" datatype="html">
+        <source>Edit or Delete weight</source>
+        <target>Editar o Borrar peso</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/addoredit-weight/add-or-edit-weight.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6524262610032366385" datatype="html">
+        <source>Choose a date</source>
+        <target>Elige una fecha</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/addoredit-weight/add-or-edit-weight.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="750911178749235694" datatype="html">
+        <source>DD/MM/YYYY</source>
+        <target>DD/MM/AAAA</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/addoredit-weight/add-or-edit-weight.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5848348023107769657" datatype="html">
+        <source>Weight</source>
+        <target>Peso</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/addoredit-weight/add-or-edit-weight.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/weight-history/weight-history.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3768927257183755959" datatype="html">
+        <source>Save</source>
+        <target>Guardar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/addoredit-weight/add-or-edit-weight.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7022070615528435141" datatype="html">
+        <source>Delete</source>
+        <target>Borrar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/addoredit-weight/add-or-edit-weight.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2159130950882492111" datatype="html">
+        <source>Cancel</source>
+        <target>Cancelar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/addoredit-weight/add-or-edit-weight.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8364309938383915497" datatype="html">
+        <source> Home </source>
+        <target> Inicio </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.html</context>
+          <context context-type="linenumber">19,21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3229019717433365505" datatype="html">
+        <source> Weight-History </source>
+        <target> Historial-Peso </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.html</context>
+          <context context-type="linenumber">23,25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7028204981963450021" datatype="html">
+        <source>Sign up</source>
+        <target>Registrase</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.html</context>
+          <context context-type="linenumber">48</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2715185765061607307" datatype="html">
+        <source> Log in </source>
+        <target> Ingresar </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.html</context>
+          <context context-type="linenumber">50,52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7504940227782988572" datatype="html">
+        <source> Logout </source>
+        <target> Cerrar Sesión</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.html</context>
+          <context context-type="linenumber">53,55</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2214790545311021123" datatype="html">
+        <source> by Alan Barrientos.</source>
+        <target> Hecho por Alan Barrientos </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.html</context>
+          <context context-type="linenumber">65</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1261128044002358466" datatype="html">
+        <source>Powered by:</source>
+        <target>Hecho con:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.html</context>
+          <context context-type="linenumber">67</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7705516999055932729" datatype="html">
+        <source> Where you can track you progress </source>
+        <target> Donde tu podras hacer seguimiento de tu progreso </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/landing/landing.component.html</context>
+          <context context-type="linenumber">12,14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1186089452280454770" datatype="html">
+        <source> At first your weight was: <x id="INTERPOLATION" equiv-text="{{firstWeight}}"/> kg Actual weight: <x id="INTERPOLATION_1" equiv-text="{{lastWeight}}"/> kg </source>
+        <target> Empezaste con: <x id="INTERPOLATION" equiv-text="{{firstWeight}}"/> kg Tu Ahora tienes: <x id="INTERPOLATION_1" equiv-text="{{lastWeight}}"/> kg</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/landing/landing.component.html</context>
+          <context context-type="linenumber">20,23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6702113904484381295" datatype="html">
+        <source>You has gain <x id="INTERPOLATION" equiv-text="{{weightGainOrLoss()}}"/> kg</source>
+        <target>Has subido <x id="INTERPOLATION" equiv-text="{{weightGainOrLoss()}}"/> kg</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/landing/landing.component.html</context>
+          <context context-type="linenumber">29,30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="626756332529850550" datatype="html">
+        <source>You have loss <x id="INTERPOLATION" equiv-text="{{weightGainOrLoss()}}"/> kg</source>
+        <target>Has bajado <x id="INTERPOLATION" equiv-text="{{weightGainOrLoss()}}"/> kg</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/landing/landing.component.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6115170818814021269" datatype="html">
+        <source>You have the same weigth</source>
+        <target>Sigues con el mismo peso</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/landing/landing.component.html</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5248717555542428023" datatype="html">
+        <source>Username</source>
+        <target>Nombre de Usuario</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login/login.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1555721751742522708" datatype="html">
+        <source>required</source>
+        <target>campo requerido</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login/login.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login/login.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/singup/singup.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/singup/singup.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/singup/singup.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1431416938026210429" datatype="html">
+        <source>Password</source>
+        <target>Contraseña</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login/login.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7799129514841742039" datatype="html">
+        <source>username or password are incorrect</source>
+        <target>nombre de usuario o contraseña incorrecto/a</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login/login.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6542676228301148432" datatype="html">
+        <source>login</source>
+        <target>iniciar sesión</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login/login.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5160994283658485139" datatype="html">
+        <source>name need to be more longer than 2</source>
+        <target>nombre de usuario debe debe tener al menos 2 caracteres</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/singup/singup.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4877417342106798755" datatype="html">
+        <source>name is longer</source>
+        <target>nombre de usuario es largo</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/singup/singup.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7715933207550166761" datatype="html">
+        <source>is not a valid email</source>
+        <target>email no valido</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/singup/singup.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8012344910054029733" datatype="html">
+        <source>Male</source>
+        <target>Hombre</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/singup/singup.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5667840900782067941" datatype="html">
+        <source>Female</source>
+        <target>Mujer</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/singup/singup.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5018804994794983050" datatype="html">
+        <source>Signup</source>
+        <target>Registrase</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/singup/singup.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3837706876054124390" datatype="html">
+        <source>Add Weight</source>
+        <target>Agregar Peso</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/weight-history/weight-history.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3521118459152923553" datatype="html">
+        <source>Weight Along the Time</source>
+        <target>Tu peso a lo largo de los días</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/weight-history/weight-history.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3973931101896534797" datatype="html">
+        <source>Date</source>
+        <target>Fecha</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/weight-history/weight-history.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

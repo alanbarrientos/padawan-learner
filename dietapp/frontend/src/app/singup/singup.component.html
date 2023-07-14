@@ -1,0 +1,51 @@
+<div class="hero is-primary is-fullheight-with-navbar">
+  <div class="hero-body is-justify-content-center is-align-items-center">
+    <div class="columns is-flex is-flex-direction-column box">
+      <div class="column">
+        <form [formGroup]="signupForm" class="form" (ngSubmit)="onSubmit()">
+          <div class="field">
+            <label class="label">Username</label>
+            <input class="input" formControlName="name"/>
+            <div *ngIf="signupForm.controls['name'].errors && signupForm.controls['name'].touched" class="help is-danger">
+              <p *ngIf="signupForm.controls['name'].errors['required']" i18n>required</p>
+              <p *ngIf="signupForm.controls['name'].errors['minlength']" i18n>name need to be more longer than 2</p>
+              <p *ngIf="signupForm.controls['name'].errors['maxlength']" i18n>name is longer</p>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Email</label>
+            <input class="input" formControlName="email"/>
+            <div *ngIf="signupForm.controls['email'].errors && signupForm.controls['email'].touched" class="help is-danger">
+              <p *ngIf="signupForm.controls['email'].errors['required']" i18n>required</p>
+              <p *ngIf="signupForm.controls['email'].errors['email']" i18n>is not a valid email</p>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Password</label>
+            <input class="input" formControlName="password" [type]="seePassword ? 'text' : 'password'"/>
+            <div *ngIf="signupForm.controls['password'].errors && signupForm.controls['password'].touched" class="help is-danger">
+              <p *ngIf="signupForm.controls['password'].errors['required']" i18n>required</p>
+            </div>
+          </div>
+          <label class="checkbox">
+            <input type="checkbox" (change)="seePassword= !seePassword">
+            See password
+          </label>
+          <div class="field">
+            <label class="label">Gender</label>
+            <div class="select  mb-1">
+              <select class="dropdown" formControlName="gender">
+              <option value=0 i18n>Male</option>
+              <option value=1 i18n>Female</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <button class="button is-primary is-fullwidth" type="submit" i18n>Signup</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -8,6 +8,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kevinsawicki.http.HttpRequest;
 import org.springframework.stereotype.Component;
 
+import java.io.InterruptedIOException;
+import java.net.SocketTimeoutException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,10 +33,15 @@ public class ShazamApi implements LyricsProvider {
             return new ShazamMetadata();
         }
         System.out.println("beforeCallShazam");
-        String body = HttpRequest.get(LYRICS_URL + key, true,
-                "shazamapiversion", "v3",
-                "video", "v3"
-        ).body();
+        String body = null;
+        try {
+            body = HttpRequest.get(LYRICS_URL + key, true,
+                    "shazamapiversion", "v3",
+                    "video", "v3"
+            ).readTimeout(2000).body();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         System.out.println("afterCallShazam");
         RawMetadataModel responseLyrics = null;
         try{
@@ -69,14 +76,19 @@ public class ShazamApi implements LyricsProvider {
     }
 
     private Integer getMusicId(String songName){
-        HttpRequest keySearchResponse = HttpRequest.get(SEARCH_KEY_FIRST_PART_URL, true,
-        "term", songName,
-                "numResults", 1,
-                "offset", 0,
-                "types", "artists,songs",
-                "limit", 1
-        );
-        String responseContentUrl = keySearchResponse.body();
+        String responseContentUrl = null;
+        try {
+            HttpRequest keySearchResponse = HttpRequest.get(SEARCH_KEY_FIRST_PART_URL, true,
+                    "term", songName,
+                    "numResults", 1,
+                    "offset", 0,
+                    "types", "artists,songs",
+                    "limit", 1
+            ).readTimeout(2000);
+            responseContentUrl = keySearchResponse.body();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         Integer id = null;
         System.out.println("This is the response of shazam when get id" + responseContentUrl);
 

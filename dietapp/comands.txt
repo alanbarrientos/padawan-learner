@@ -1,0 +1,78 @@
+apt-get update #para que descarge lo que tiene que hacer upgrade
+
+apt-get upgrade #hace upgrade de lo que descargo
+
+timedatectl list-timezones #te lista las zonas horarias
+
+timedatectl set-timezone America/Asuncion #canbias la zona horaria de tu server
+
+date #te da la fecha y hora actual
+
+apt install mysql-server #instala mysql
+
+systemctl start mysql.service #inicia Mysql
+
+ALTER USER 'root'@'localhost' IDENTIFIED WITH #cambias el por default y le agregas contrasenha
+
+mysql_native_password BY 'Mysql8318+'; #cabias el password
+
+exit #salir de mysql
+
+mysql_secure_installation # se instala bien Mysql
+
+mysql -u root -p #para ingresar a mi base de datos mysql
+
+Mysql8318+ #contrasenha de mysql
+
+CREATE DATABASE dieta;
+
+ssh root@143.244.163.204
+
+apt install openjdk-17-jdk openjdk-17-jre
+
+java -version
+
+init 6 #reinicia
+
+ls #lista los directorios
+
+cd #para dirigirte a los directorios
+
+nslookup #para consultar al dns la ip de un sitio
+
+ping #para probar una coneccion
+
+nc - netcat #para abrir conecciones a traves de tcp o udp
+
+grep #para filtrar lo que sale de un output con exprecion
+regular
+
+nohup #para que no deje de hacer algo aunque la session expire
+
+vi #para escribir documentos en terminal
+
+que hace ctrl-z en una terminal de linux
+
+que hace el &, && y || (en una linea de comando cuando es
+ejecutada por el shell?)
+
+que hace >/dev/null 2>/dev/null  al final de un comando
+
+que hace $_ cat archivo.txt | grep "algo raro" ???
+
+cron, crontab
+
+ps aux | grep java #para ver que procesos de java estan corriendo en segundo plano
+
+sudo crontab -e #para que te aparezca el archivo de crontab del root para modificar que tarea tiene que hacer
+dentro de el para que algo realize al bootear le tenes que agregar al final @reboot y la tarea que queres que haga
+
+sudo systemctl start cron.service #para que reinicie la configuracion a la actual
+
+sudo systemctl status cron.service #para saber el status del crontab de root
+
+grep CRON /var/log/syslog #para ver que pasa con cron, sus logs
+
+history | grep
+
+service caddy [start|stop|status]

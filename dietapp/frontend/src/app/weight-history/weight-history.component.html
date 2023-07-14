@@ -1,0 +1,38 @@
+<div  class="has-background-primary is-fullheight-with-navbar">
+  <div  class="container is-max-widescreen is-centered has-background-white-bis p-5">
+    <app-add-weight (close)="AddOpenOrClose()" (refresh)="refresh()" *ngIf="modalAdd"
+                    [weight]="weightForSent"></app-add-weight>
+    <button (click)="AddOpenOrClose()" class="button is-primary mb-5" i18n>Add Weight</button>
+    <div class="has-background-white box">
+      <h1 class="has-text-centered is-size-4" i18n>Your weight graph</h1>
+      <app-chart-weight [weights]="weights"></app-chart-weight>
+    </div>
+    <div class="columns">
+      <div class="column is-centered">
+        <div *ngFor="let weight of weights">
+          <div (click)="openWeight(weight)" class="box mb-2 p-1 has-text">
+            <h3 class="m-1">{{weight.date.toString().split('T')[0]}}</h3>
+            <h2 class="m-1">{{weight.weight| number: '1.1-1'}} kg.</h2>
+          </div>
+        </div>
+        <h1 class="has-text-centered m-3 is-size-3">Table</h1>
+      <table class="table is-fullwidth is-scrollable">
+        <thead>
+        <tr>
+          <th i18n>Date</th>
+          <th i18n>Weight</th>
+        </tr>
+        </thead>
+        <tbody height="200px">
+        <ng-container *ngFor="let weight of weights">
+          <tr>
+            <th>{{weight.date.toString().split('T')[0]}}</th>
+            <th>{{weight.weight| number: '1.1-1'}}</th>
+          </tr>
+        </ng-container>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,32 @@
+<div class="modal is-active">
+  <div class="modal-background" (click)="onCloseClick()"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title" *ngIf="!weight" i18n>Add weight</p>
+      <p class="modal-card-title" *ngIf="weight" i18n>Edit or Delete weight</p>
+      <button class="delete" aria-label="close" (click)="onCloseClick()"></button>
+    </header>
+    <section class="modal-card-body">
+      <div>
+        <form id="form" [formGroup]="weightForm" (ngSubmit)="onSubmit()">
+          <mat-form-field appearance="fill" class="mb-4">
+            <mat-label i18n>Choose a date</mat-label>
+            <input formControlName="date" matInput [max]="maxDate" [matDatepicker]="picker!">
+            <mat-hint i18n>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          <br>
+          <label i18n>Weight</label>
+          <input class="input" placeholder="Weight" formControlName="weight"/>
+          <br>
+        </form>
+      </div>
+    </section>
+    <footer class="modal-card-foot">
+      <button form="form" class="button is-success" type="submit" i18n>Save</button>
+      <button class="button is-danger" (click)="deleteWeight()" *ngIf="weight" i18n>Delete</button>
+      <button class="button" (click)="onCloseClick()" i18n>Cancel</button>
+    </footer>
+  </div>
+</div>

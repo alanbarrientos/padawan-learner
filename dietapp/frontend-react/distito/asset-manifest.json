@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/static/css/main.4a94b1dc.css",
+    "main.js": "/static/js/main.7acf4f02.js",
+    "static/js/787.22e3b59d.chunk.js": "/static/js/787.22e3b59d.chunk.js",
+    "static/media/landing.jpg": "/static/media/landing.f26d05e5e68321c1e4b5.jpg",
+    "static/media/goodjob.png": "/static/media/goodjob.fe7330b6e2dddf7f4f2b.png",
+    "static/media/scary.png": "/static/media/scary.120909f099ba4e81f265.png",
+    "static/media/reactlogo.jpg": "/static/media/reactlogo.4feb3bb9c88aae49a7d4.jpg",
+    "static/media/me.jpg": "/static/media/me.3877ce89afb813c37016.jpg",
+    "static/media/myapp.jpeg": "/static/media/myapp.b684e8890d60078fc980.jpeg",
+    "static/media/springlogo.png": "/static/media/springlogo.c21cf0bc766ec92dff18.png",
+    "index.html": "/index.html",
+    "main.4a94b1dc.css.map": "/static/css/main.4a94b1dc.css.map",
+    "main.7acf4f02.js.map": "/static/js/main.7acf4f02.js.map",
+    "787.22e3b59d.chunk.js.map": "/static/js/787.22e3b59d.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4a94b1dc.css",
+    "static/js/main.7acf4f02.js"
+  ]
+}

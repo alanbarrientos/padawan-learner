@@ -1,0 +1,64 @@
+<!--<img src="https://cdn.pixabay.com/photo/2014/07/28/11/18/scale-403585_960_720.jpg">-->
+<div>
+  <div class="columns">
+    <div class="column hero has-background-primary is-fullheight-with-navbar ">
+      <div class="hero-body has-text-centered">
+        <div>
+          <div>
+            <div class="mt-0">
+              <h1 class="is-text  is-size-1 is-family-monospace has-text-weight-bold has-text-white">
+                Dietapp
+              </h1><br/>
+              <h2 class="is-text is-size-2-mobile is-size-2" i18n>
+                Where you can track you progress
+              </h2>
+            </div>
+          </div>
+          <div class="mt-6 ">
+          <div *ngIf="logged" class="columns box m-4">
+            <div class="column is-half box has-background-grey-light">
+              <h2 class="subtitle is-size-4 " i18n>
+                At first your weight was: {{firstWeight}} kg<br/>
+                Actual weight: {{lastWeight}} kg
+              </h2>
+            </div>
+            <div class="column is-half">
+              <div *ngIf="stateOfWeight() == 'gain'">
+                <div class="has-text-centered">
+                  <img src="./assets/scary.png" class="rotateIn image is-128x128 is-inline-block"/>
+                  <h1 class="is-size-4 box has-background-danger" i18n>You have
+                    gain {{weightGainOrLoss()| number: '1.1-1'}} kg</h1>
+                  <p></p>
+                </div>
+              </div>
+              <div *ngIf=" stateOfWeight() == 'loss'">
+                <div class="has-text-centered">
+                  <img src="./assets/goodjob.png" class="slideDown image is-128x128 is-inline-block"/><br/>
+                  <h1 class="is-size-4 box has-background-success" i18n>You have loss {{weightGainOrLoss()| number: '1.1-1'}} kg</h1>
+                </div>
+              </div>
+              <div *ngIf=" stateOfWeight() == 'equal'">
+                <div class="has-text-centered">
+                  <img src="./assets/me.jpg" class="zoomer image is-128x128 is-inline-block"/><br/>
+                  <h1 class="is-size-4 box has-background-grey" i18n>You have the same weigth</h1>
+                </div>
+              </div>
+              <br/>
+            </div>
+          </div>
+          <div *ngIf="!logged">
+            <div class="box has-background-white-bis">
+              <img src="./assets/myapp.jpeg" class="is-bordered"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    <div class="column has-background-primary hero is-fullheight-with-navbar is-hidden-mobile">
+      <div class="hero-body card-image">
+        <img src="./assets/landing.jpg" />
+      </div>
+    </div>
+  </div>
+</div>

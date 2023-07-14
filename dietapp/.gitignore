@@ -1,0 +1,15 @@
+target/
+dist/
+node_modules/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+
+# Miscellaneous
+.angular/
+.sass-cache/
+

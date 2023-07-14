@@ -1,0 +1,74 @@
+<app-dashboard *ngIf="error"></app-dashboard>
+<nav class="navbar is-light" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item pb-0 pt-0  mt-3" routerLink="">
+      <h1 style="color:#00d1b2" class="has-text-weight-bold is-size-3 ">:</h1>
+      <h1 style="color:#00d1b2" class="has-text-weight-bold is-size-4 ">D</h1>
+      <h1 class=""> ietapp</h1>
+    </a>
+    <a id="burger" role="button" class="navbar-burger" (click)="toggleDropdown()" aria-label="menu"
+       aria-expanded="false"
+       data-target="my-nav">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div id="my-nav" class="navbar-menu">
+    <div class="navbar-start">
+      <a class="navbar-item" routerLink="" (click)="toggleDropdown()" i18n>
+        Home
+      </a>
+
+      <a class="navbar-item" routerLink="weight-history" *ngIf="login" (click)="toggleDropdown()" i18n>
+        Weight-History
+      </a>
+
+      <!--      <div class="navbar-item has-dropdown is-hoverable" *ngIf="login">-->
+      <!--        <a class="navbar-link">-->
+      <!--          More-->
+      <!--        </a>-->
+
+      <!--        <div class="navbar-dropdown">-->
+      <!--          <a class="navbar-item" routerLink="/role-user">-->
+      <!--            Role-User-->
+      <!--          </a>-->
+      <!--          <a class="navbar-item" routerLink="/role-admin">-->
+      <!--            Role-Admin-->
+      <!--          </a>-->
+      <!--          <hr class="navbar-divider">-->
+      <!--        </div>-->
+      <!--      </div>-->
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+          <a class="button is-primary" routerLink="/signup" *ngIf="!login" (click)="toggleDropdown()">
+            <strong i18n>Sign up</strong>
+          </a>
+          <a class="button has-background-grey-lighter" routerLink="/login" *ngIf="!login" (click)="toggleDropdown()" i18n>
+            Log in
+          </a>
+          <a class="button has-background-grey-lighter" (click)="logout()" *ngIf="login" (click)="toggleDropdown()" i18n>
+            Logout
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<router-outlet></router-outlet>
+<footer class="footer pt-5 pb-3 ">
+  <div class="content has-text-centered ">
+    <p>
+      <strong>Dietapp</strong><a href="https://www.linkedin.com/in/alan-barrientos-041026239/" i18n> by Alan Barrientos.</a>
+    </p>
+    <p class="mt-0 mb-0 mr- pb-2 is-inline" i18n>Powered by:</p>
+    <img style="height: 15px" src="./assets/angularlogo.png" class="is-inline mr-3 ml-3"/>
+    <img style="height: 15px" src="./assets/springlogo.png" class="is-inline mr-3 ml-3"/>
+    <img style="height: 15px" src="https://bulma.io/images/bulma-logo.png" class="is-inline mr-3 ml-3"/>
+  </div>
+</footer>
+
+

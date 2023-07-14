@@ -1,0 +1,27 @@
+<div class="hero is-primary is-fullheight-with-navbar">
+  <div class="hero-body is-justify-content-center is-align-items-center">
+    <div class="columns is-flex is-flex-direction-column box">
+      <div class="column">
+        <form class="form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="field">
+            <label class="label" i18n>Email</label>
+            <input formControlName="name" class="input"/>
+            <div *ngIf="loginForm.controls['name'].errors && loginForm.controls['name'].touched" class="help is-danger">
+              <p *ngIf="loginForm.controls['name'].errors['required']" i18n>required</p>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" i18n>Password</label>
+            <input formControlName="password" type="password" class="input"/>
+            <div *ngIf="loginForm.controls['password'].errors && loginForm.controls['password'].touched" class="help is-danger">
+            <p *ngIf="loginForm.controls['password'].errors['required']" i18n>required</p>
+          </div>
+            <p class="help is-danger" *ngIf="errorMessage" i18n>username or password are incorrect</p>
+
+          </div>
+          <button type="submit" class="button is-primary is-fullwidth" i18n>login</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
