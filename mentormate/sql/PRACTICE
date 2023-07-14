@@ -1,0 +1,510 @@
+BASIC SELECT
+
+     1-REVISING THE SELECT QUERY
+          Query all columns for all American cities in the CITY table with populations larger than 100000. The CountryCode for America is USA.
+
+          Select * from city where countrycode = 'USA' and population>100000;
+
+
+
+
+
+     2-REVISING THE SELECT QUERY II
+          Query the NAME field for all American cities in the CITY table with populations larger than 120000. The CountryCode for America is USA.
+
+          Select city.name from city where population>120000 and countrycode='usa';
+
+
+
+
+
+     3-SELECT ALL
+          Query all columns (attributes) for every row in the CITY table.
+
+          select * from city;
+
+
+
+
+
+     4-SELECT BY ID
+          Query all columns for a city in CITY with the ID 1661.
+
+          Select * from city where id=1661;
+
+
+
+
+
+     5-JAPANESE CITIES ATRIBUTES
+          Query all attributes of every Japanese city in the CITY table. The COUNTRYCODE for Japan is JPN.
+
+          Select * from city where countrycode = 'JPN';
+
+
+
+
+
+
+
+     6-JAPANESE CITIES NAMES
+          Query the names of all the Japanese cities in the CITY table. The COUNTRYCODE for Japan is JPN.
+
+          Select c.name from city c where countrycode = 'JPN';
+
+
+
+
+
+
+
+     7-WHEATHER OBSERVATION STATION 1
+          Query a list of CITY and STATE from the STATION table.
+
+          Select s.city, s.state from station s;
+
+
+
+
+     8-WHEATHER OBSERVATION STATION 3
+          Query a list of CITY names from STATION for cities that have an even ID number. Print the results in any order, but exclude duplicates from the answer.
+
+          Select distinct s.city from Station s where mod(id, 2) = 0;
+
+
+
+
+
+
+     9-WHEATHER OBSERVATION STATION 4
+          Find the difference between the total number of CITY entries in the table and the number of distinct CITY entries in the table.
+
+          select count(*) - count(distinct City) from station;
+
+
+
+
+
+     10-WHEATHER OBSERVATION STATION 5
+          Query the two cities in STATION with the shortest and longest CITY names, as well as their respective lengths (i.e.: number of characters in the name). If there is more than one smallest or largest city, choose the one that comes first when ordered alphabetically.
+
+          (SELECT s.city, LENGTH(s.city) FROM station s order by 2,1 asc limit 1)
+          union
+          (SELECT s.city, LENGTH(s.city) FROM station s order by 2 desc,1 asc limit 1)
+
+
+     11-WHEATHER OBSERVATION STATION 6
+          Query the list of CITY names starting with vowels (i.e., a, e, i, o, or u) from STATION. Your result cannot contain duplicates.
+
+          SELECT city
+          FROM station s
+          where city REGEXP '^[a,e,i,o,u]'
+
+     12-WHEATHER OBSERVATION STATION 7
+          Query the list of CITY names ending with vowels (a, e, i, o, u) from STATION. Your result cannot contain duplicates.
+
+          SELECT city
+          FROM station s 
+          WHERE city REGEXP '[aeiou]$'
+          GROUP BY city;
+
+     13- WHEATHER OBSERVATION STATION 8
+          Query the list of CITY names from STATION which have vowels (i.e., a, e, i, o, and u) as both their first and last characters. Your result cannot contain duplicates.
+
+          SELECT city
+          FROM station
+          WHERE city REGEXP '^[aeiouAEIOU].*[aeiouAEIOU]$'
+          GROUP BY city;
+
+
+
+     14- WHEATHER OBSERVATION STATION 9
+          Query the list of CITY names from STATION that do not start with vowels. Your result cannot contain duplicates.
+
+          SELECT city
+          FROM station
+          WHERE city REGEXP '^[^[aeiouAEIOU]]'
+          GROUP BY city;
+
+     15-WHEATHER OBSERVATION STATION 10
+          Query the list of CITY names from STATION that do not end with vowels. Your result cannot contain duplicates.
+
+          SELECT city
+          FROM station
+          WHERE city REGEXP '[^[aeiouAEIOU]]$'
+          GROUP BY city;
+
+
+     16-WHEATHER OBSERVATION STATION 11
+          Query the list of CITY names from STATION that either do not start with vowels or do not end with vowels. Your result cannot contain duplicates.
+
+          SELECT city
+          FROM station
+          WHERE city REGEXP '(^[^[aeiouAEIOU]])|([^[aeiouAEIOU]]$)'
+          GROUP BY city;
+
+
+
+
+     17-WHEATHER OBSERVATION STATION 12
+          Query the list of CITY names from STATION that do not start with vowels and do not end with vowels. Your result cannot contain duplicates.
+
+          SELECT city
+          FROM station
+          WHERE city REGEXP '^[^[aeiouAEIOU]].*[^[aeiouAEIOU]]$'
+          GROUP BY city
+
+     18-HIGHER THAN 75 MARKS
+          Query the Name of any student in STUDENTS who scored higher than 75 Marks. Order your output by the last three characters of each name. If two or more students both have names ending in the same last three characters (i.e.: Bobby, Robby, etc.), secondary sort them by ascending ID.
+
+          SELECT name
+          FROM students 
+          WHERE marks > 75
+          ORDER BY RIGHT(name, 3) asc, id asc
+
+     19-EMPLOYEE NAMES
+          Write a query that prints a list of employee names (i.e.: the name attribute) from the Employee table in alphabetical order.
+
+          SELECT name
+          FROM employee
+          ORDER BY name ASC;
+
+     20-EMPLOYEE SALARIES
+          Write a query that prints a list of employee names (i.e.: the name attribute) for employees in Employee having a salary greater than $2.000 per month who have been employees for less than 10 months. Sort your result by ascending employee_id.
+
+          SELECT name 
+          FROM employee
+          WHERE salary > 2000 AND months < 10
+          ORDER BY employee_id ASC;
+
+
+
+
+
+
+
+ADVANCED SELECT
+
+     2-TYPE OF TRIANGLE
+          Write a query identifying the type of each record in the TRIANGLES table using its three side lengths. Output one of the following statements for each record in the table:
+
+          Equilateral: It's a triangle with  sides of equal length.
+          Isosceles: It's a triangle with  sides of equal length.
+          Scalene: It's a triangle with  sides of differing lengths.
+          Not A Triangle: The given values of A, B, and C don't form a triangle.
+
+          SELECT 
+          CASE
+              WHEN a = b AND b = c  THEN "Equilateral"
+              WHEN (a = b AND c!= b AND a + b > c) OR 
+                   (b = c AND c != a AND b + c > a) OR 
+                   (c = a AND a!=b AND c + a > b) THEN "Isosceles"
+              WHEN a != b AND 
+                   b != c AND 
+                   c != a AND 
+                   a + b > c AND 
+                   b + c > a AND 
+                   c + a > b THEN "Scalene"
+              ELSE "Not A Triangle"
+          END
+          FROM triangles
+
+
+
+
+
+
+     3-THE PADS
+          Generate the following two result sets:
+
+          Query an alphabetically ordered list of all names in OCCUPATIONS, immediately followed by the first letter of each profession as a parenthetical (i.e.: enclosed in parentheses). For example: AnActorName(A), ADoctorName(D), AProfessorName(P), and ASingerName(S).
+          Query the number of ocurrences of each occupation in OCCUPATIONS. Sort the occurrences in ascending order, and output them in the following format:
+
+          There are a total of [occupation_count] [occupation]s.
+          where [occupation_count] is the number of occurrences of an occupation in OCCUPATIONS and [occupation] is the lowercase occupation name. If more than one Occupation has the same [occupation_count], they should be ordered alphabetically.
+
+          SELECT CONCAT(name,'(',LEFT(occupation, 1),')')
+          FROM occupations
+          ORDER BY name;
+          SELECT 
+          CONCAT (
+                  'There are a total of ',
+                  COUNT(occupation),
+                  ' ',
+                  LOWER(occupation),
+                  's.'
+                 )
+          FROM occupations
+          GROUP BY occupation
+          ORDER BY COUNT(occupation) asc, occupation asc;
+
+
+
+
+
+     5-NEW COMPANIES
+          Amber's conglomerate corporation just acquired some new companies. Each of the companies follows this hierarchy:
+
+          Given the table schemas below, write a query to print the company_code, founder name, total number of lead managers, total number of senior managers, total number of managers, and total number of employees. Order your output by ascending company_code.
+
+          Note:
+
+          The tables may contain duplicate records.
+          The company_code is string, so the sorting should not be numeric. For example, if the company_codes are C_1, C_2, and C_10, then the ascending company_codes will be C_1, C_10, and C_2.
+
+          SELECT 
+          c.company_code,
+          c.founder,
+          COUNT(DISTINCT e.lead_manager_code),
+          COUNT(DISTINCT e.senior_manager_code),
+          COUNT(DISTINCT e.manager_code),
+          COUNT(DISTINCT e.employee_code)
+          FROM company c
+          JOIN employee e
+          ON c.company_code = e.company_code
+          GROUP BY 
+          c.company_code,
+          founder
+          ORDER BY 
+          c.company_code
+
+
+
+
+AGGREGATION
+
+     1-REVISING AGGREGATIONS - THE COUNT FUNCTION
+          Query a count of the number of cities in CITY having a Population larger than 100.000.
+
+          SELECT COUNT(name)
+          FROM city
+          WHERE population > 100000
+
+
+
+     2-REVISING AGGREGATIONS - THE SUM FUNCTION
+          Query the total population of all cities in CITY where District is California.
+
+          SELECT SUM(population) 
+          FROM city
+          WHERE district = 'California'
+
+
+
+     3-REVISING AGGREGATIONS - AVERAGES
+          Query the average population of all cities in CITY where District is California.
+
+          SELECT AVG(population) 
+          FROM city
+          WHERE district = 'California'
+
+
+
+     4-AVERAGE POPULATION
+          Query the average population for all cities in CITY, rounded down to the nearest integer.
+
+          SELECT FLOOR(AVG(population))
+          FROM city
+
+
+
+     5-JAPAN POPULATION
+          Query the sum of the populations for all Japanese cities in CITY. The COUNTRYCODE for Japan is JPN.
+
+          SELECT SUM(population)
+          FROM city
+          WHERE countrycode='JPN'
+
+
+
+     6-POPULATION DENSITY DIFERENCE
+          Query the difference between the maximum and minimum populations in CITY.
+
+          SELECT MAX(population) - MIN(population)
+          FROM city
+
+
+     7-THE BLUNDER
+          Samantha was tasked with calculating the average monthly salaries for all employees in the EMPLOYEES table, but did not realize her keyboard's 0 key was broken until after completing the calculation. She wants your help finding the difference between her miscalculation (using salaries with any zeros removed), and the actual average salary.
+
+          Write a query calculating the amount of error (i.e.:  average monthly salaries), and round it up to the next integer.
+
+          SELECT CEILING(AVG(salary) - AVG(REPLACE(salary, '0', '')))
+          FROM employees
+
+
+
+
+     8-TOP EARNS
+          We define an employee's total earnings to be their monthly salary x months worked, and the maximum total earnings to be the maximum total earnings for any employee in the Employee table. Write a query to find the maximum total earnings for all employees as well as the total number of employees who have maximum total earnings. Then print these values as  space-separated integers.
+
+          SELECT MAX(salary*months), COUNT(*) 
+          FROM employee 
+          WHERE salary*months IN (SELECT MAX(salary*months) FROM employee)
+
+
+
+
+     9-WEATHER OBSERVATION STATION 2
+          Query the following two values from the STATION table:
+
+          The sum of all values in LAT_N rounded to a scale of  decimal places.
+          The sum of all values in LONG_W rounded to a scale of  decimal places.
+
+          SELECT ROUND(SUM(lat_n), 2), ROUND(SUM(long_w), 2)
+          FROM station
+
+
+
+
+     10-WEATHER OBSERVATION STATION 13
+          Query the sum of Northern Latitudes (LAT_N) from STATION having values greater than 38.7880 and less than 137.2345. Truncate your answer to 4 decimal places.
+
+          SELECT ROUND(SUM(lat_n), 4)
+          FROM station 
+          WHERE lat_n > 38.7880 AND lat_n < 137.2345
+
+
+
+     11-WEATHER OBSERVATION STATION 14
+          Query the greatest value of the Northern Latitudes (LAT_N) from STATION that is less than 137.2345. Truncate your answer to 4 decimal places.
+
+          SELECT ROUND(MAX(lat_n), 4)
+          FROM station
+          WHERE lat_n < 137.2345
+
+
+
+     12-WEATHER OBSERVATION STATION 15
+          Query the Western Longitude (LONG_W) for the largest Northern Latitude (LAT_N) in STATION that is less than 137.2345. Round your answer to 4 decimal places.
+
+          SELECT ROUND(long_w, 4) 
+          FROM station
+          WHERE lat_n < 137.2345
+          ORDER BY lat_n DESC LIMIT 1
+
+
+
+
+     13-WEATHER OBSERVATION STATION 16
+          Query the smallest Northern Latitude (LAT_N) from STATION that is greater than 38.7780. Round your answer to  decimal places.
+
+          SELECT ROUND(MIN(lat_n), 4)
+          FROM station
+          WHERE lat_n > 38.7780
+
+
+
+
+     14-WEATHER OBSERVATION STATION 17
+          Query the Western Longitude (LONG_W)where the smallest Northern Latitude (LAT_N) in STATION is greater than 38.7780. Round your answer to 4 decimal places.
+
+          SELECT ROUND(long_w, 4)
+          FROM station
+          WHERE lat_n > 38.7780
+          ORDER BY lat_n ASC LIMIT 1
+
+
+     
+
+
+
+
+
+
+BASIC JOIN
+
+
+     1-POPULATION CENSUS
+          Given the CITY and COUNTRY tables, query the sum of the populations of all cities where the CONTINENT is 'Asia'.
+
+          Note: CITY.CountryCode and COUNTRY.Code are matching key columns.
+
+          SELECT SUM(ci.population)
+          FROM city ci
+          JOIN country co ON co.code = ci.countrycode
+          WHERE co.continent = 'Asia'
+
+
+
+     2-AFRICAN CITIES
+          Given the CITY and COUNTRY tables, query the names of all cities where the CONTINENT is 'Africa'.
+
+          Note: CITY.CountryCode and COUNTRY.Code are matching key columns.
+
+          SELECT ci.name
+          FROM city ci
+          JOIN country co ON co.code = ci.countrycode
+          WHERE co.continent = 'Africa'
+
+
+
+     3-AVERAGE POPULATION OF EACH CONTINENT
+          Given the CITY and COUNTRY tables, query the names of all the continents (COUNTRY.Continent) and their respective average city populations (CITY.Population) rounded down to the nearest integer.
+
+          Note: CITY.CountryCode and COUNTRY.Code are matching key columns.
+
+          SELECT co.continent, FLOOR(AVG(ci.population))
+          FROM city ci
+          JOIN country co on co.code = ci.countrycode
+          GROUP BY co.continent
+
+
+
+     4-THE REPORT
+          You are given two tables: Students and Grades. Students contains three columns ID, Name and Marks. Ketty gives Eve a task to generate a report containing three columns: Name, Grade and Mark. Ketty doesn't want the NAMES of those students who received a grade lower than 8. The report must be in descending order by grade -- i.e. higher grades are entered first. If there is more than one student with the same grade (8-10) assigned to them, order those particular students by their name alphabetically. Finally, if the grade is lower than 8, use "NULL" as their name and list them by their grades in descending order. If there is more than one student with the same grade (1-7) assigned to them, order those particular students by their marks in ascending order.
+
+          Write a query to help Eve.
+
+          SELECT IF(g.grade >= 8, s.name, "NULL"), g.grade, s.marks
+          FROM students s
+          JOIN grades g ON s.marks >= min_mark AND s.marks <= max_mark 
+          ORDER BY g.grade DESC, s.name ASC, s.marks ASC
+
+
+     5-TOP COMPETITORS
+          Julia just finished conducting a coding contest, and she needs your help assembling the leaderboard! Write a query to print the respective hacker_id and name of hackers who achieved full scores for more than one challenge. Order your output in descending order by the total number of challenges in which the hacker earned a full score. If more than one hacker received full scores in same number of challenges, then sort them by ascending hacker_id.
+
+          SELECT h.hacker_id, h.name
+          FROM hackers h
+          JOIN submissions s ON s.hacker_id = h.hacker_id
+          JOIN challenges c ON c.challenge_id = s.challenge_id
+          JOIN difficulty d ON d.difficulty_level = c.difficulty_level
+          WHERE s.score = d.score
+          GROUP BY h.hacker_id, h.name
+          HAVING COUNT(*) > 1
+          ORDER BY count(s.challenge_id) DESC, h.hacker_id ASC
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ADVANCED JOIN
+
+     2-PLACEMENTS
+          You are given three tables: Students, Friends and Packages. Students contains two columns: ID and Name. Friends contains two columns: ID and Friend_ID (ID of the ONLY best friend). Packages contains two columns: ID and Salary (offered salary in $ thousands per month).
+          Write a query to output the names of those students whose best friends got offered a higher salary than them. Names must be ordered by the salary amount offered to the best friends. It is guaranteed that no two students got same salary offer.
+
+          SELECT s.name
+          FROM students s
+          JOIN friends f ON f.id = s.id
+          JOIN packages ps ON ps.id = s.id
+          JOIN packages pf ON pf.id = f.friend_id
+          WHERE pf.salary > ps.salary
+          ORDER BY pf.salary
+
+
+
+
+
+
+
