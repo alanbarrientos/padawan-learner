@@ -1,9 +1,6 @@
 package balan.codes.crazylist.spotify;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
@@ -11,6 +8,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class RecordProcessing {
     Date estimated;
     Boolean isSuccessful = false;

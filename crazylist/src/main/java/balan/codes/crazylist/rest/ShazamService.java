@@ -1,73 +1,81 @@
 package balan.codes.crazylist.rest;
 
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @Component
 public class ShazamService {
     @Value("${shazam.token}")
     private static  String API_KEY;
-    public static void main(String[] args) throws IOException {
-        callShazam();
-//        cutMusic();
-    }
 
-    private static void cutMusic(){
+
+    public String cutMusic(String inputFile){
 //        ffmpeg -i "C:\Users\alanb\Downloads\Music\Music\Caraluna.mp3" -ss 1 -t 5 -acodec copy "C:\Users\alanb\Downloads\Music\Music\CaralunaCuted.mp3"
 //        The comand of above work
-        String inputFile = "C:\\Users\\alanb\\Downloads\\Music\\Music\\Caraluna.mp3";
-        String outputFile = "C:\\Users\\alanb\\Downloads\\Music\\Music\\CaralunaCuted.mp3";
+//        String inputFile = "C:\\Users\\alanb\\Downloads\\Music\\Music\\Caraluna.mp3";
+        String outputFile = inputFile.replaceAll(".mp3$","cuted.mp3" );
         int startTimeInSeconds = 1;
         int durationInSeconds = 5;
 
         String ffmpegCommand = String.format("ffmpeg -i \"%s\" -ss %d -t %d -acodec copy \"%s\"", inputFile, startTimeInSeconds, durationInSeconds, outputFile);
 
-        try {
-            Process process = Runtime.getRuntime().exec(ffmpegCommand);
-            int exitCode = process.waitFor();
-
-            if (exitCode == 0) {
-                System.out.println("Music file cut successfully.");
-            } else {
-                System.out.println("Failed to cut music file. FFmpeg command returned non-zero exit code: " + exitCode);
-            }
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+        System.out.println(ffmpegCommand);
+        ProcessUtil processUtil = new ProcessUtil();
+        int exitCode = processUtil.execProccessAndWaitFor(ffmpegCommand);
+        if (exitCode == 0) {
+            System.out.println("Music file cut successfully.");
+            return outputFile;
+        } else {
+            System.out.println("Failed to cut music file. FFmpeg command returned non-zero exit code: " + exitCode);
+            return null;
         }
     }
-    private static void callShazam() {
+    public String callShazam(String inputFile) {
         String url = "https://shazam-core.p.rapidapi.com/v1/tracks/recognize";
 //        String apiKey = apikey;
 
         OkHttpClient client = new OkHttpClient();
 //        "subject":" this is the way to find the music
-        File file = new File("C:\\Users\\alanb\\Downloads\\Music\\Music\\CaralunaCuted.mp3");
-
+//        File file = new File("C:\\Users\\alanb\\Downloads\\Music\\Music\\CaralunaCuted.mp3");
+        File file = new File(inputFile);
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("file", "CaralunaCuted.mp3",
+//                .addFormDataPart("file", "CaralunaCuted.mp3",
+                .addFormDataPart("file", file.getName(),
                         RequestBody.create(MediaType.parse("audio/mpeg"), file))
                 .build();
 
         Request request = new Request.Builder()
                 .url(url)
-                .post(requestBody)
-                .addHeader("X-RapidAPI-Key", API_KEY)
                 .addHeader("X-RapidAPI-Host", "shazam-core.p.rapidapi.com")
+                .addHeader("X-RapidAPI-Key", API_KEY)
+                .post(requestBody)
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
-                System.out.println(response.body().string());
+                String responseBody = response.body().string();
+                System.out.println(responseBody);
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode rootNode = objectMapper.readTree(responseBody);
+                String trackArtist = rootNode.path("track").path("urlparams").path("{trackartist}").asText();
+                String trackTitle = rootNode.path("track").path("urlparams").path("{tracktitle}").asText();
+                return trackTitle + " " + trackArtist;
             } else {
                 System.out.println("Request failed with code: " + response.code());
+                return null;
             }
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
     }
 //    public static void main(String[] args) {

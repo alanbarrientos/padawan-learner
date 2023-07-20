@@ -3,6 +3,7 @@ package balan.codes.crazylist.spotify;
 import balan.codes.crazylist.spotify.dto.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -209,6 +210,7 @@ public class SpotifyApi {
 
 
     private void insertMusicInternal(String playlistId, List<String> tracksURI, int position){
+        System.out.println("esta es la lista de uris to insert" + Arrays.toString(tracksURI.toArray()));
         String resourceUri = "/playlists/{playlistId}/tracks";
 
         Map map = Map.of(
@@ -262,6 +264,49 @@ public class SpotifyApi {
         if (matcher.find()) {
             String id = matcher.group(1);
             return id;
+        }
+        return null;
+    }
+
+    public String getUserName(){
+        String resourceUri = "/me";
+        String body = webClient
+                .get()
+                .uri(resourceUri)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+
+        String pattern = "\"display_name\"\\s*:\\s*\"([^\"]+)\"";
+
+        Pattern regex = Pattern.compile(pattern);
+        Matcher matcher = regex.matcher(body);
+        if (matcher.find()) {
+            String name = matcher.group(1);
+            return name;
+        }
+        return null;
+    }
+
+    public String getSpotifyIdOfMusic(String titleAndArtist){
+        String resourceUri = "/search";
+        String body = webClient
+                .get()
+                .uri(uf->
+                        uf.path(resourceUri)
+                                .queryParam("q", titleAndArtist)
+                                .queryParam("type", "track")
+                                .build()
+                )
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            RootOfMusicOfSearch rootOfMusicOfSearch = objectMapper.readValue(body, RootOfMusicOfSearch.class);
+            return rootOfMusicOfSearch.tracks.items.get(0).uri;
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return null;
     }

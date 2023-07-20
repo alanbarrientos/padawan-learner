@@ -1,0 +1,34 @@
+<html>
+<header>
+
+</header>
+<body>
+<a href="http://localhost:8080/user-playlists">http://localhost:8080/user-playlists</a><br>
+<a href="http://localhost:8080/user-liked/0">http://localhost:8080/user-liked/{offset}</a><br>
+<a href="http://localhost:8080/create-playlist">http://localhost:8080/create-playlist</a><br>
+<input type="text" name="add-music" title="add-music" id="1"/>
+<button onclick="addMusic()">http://localhost:8080/add-music-in-playlist</button><br>
+<input type="text" name="getMusicOfPlaylist" title="get-music-of-playlist" id="2"/>
+<button onclick="getMusicsOfPlaylist()">http://localhost:8080/musics-of-playlist</button><br>
+<input type="text" name="delete-playlist" title="delete-playlist" id="3"/>
+<button onclick="deletePlaylist()">http://localhost:8080/delete-playlist</button><br>
+<br>
+<br>
+<br>
+<br>
+<script th:inline="javascript">
+    addMusic = () => {
+        window.location.href = 'http://localhost:8080/add-music-in-playlist/' + document.getElementById('1').value;
+    }
+    getMusicsOfPlaylist = () => {
+        window.location.href = 'http://localhost:8080/musics-of-playlist/' + document.getElementById('2').value;
+    }
+    deletePlaylist = () => {
+        window.location.href = 'http://localhost:8080/delete-playlist/' + document.getElementById('3').value;
+    }
+    logout = () => {
+        window.location.href = 'http://localhost:8080/logout';
+    }
+</script>
+</body>
+</html>

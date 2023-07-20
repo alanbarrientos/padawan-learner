@@ -1,54 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
-<body>
-Welcome to the app YOU ARE IN
-<a href="http://localhost:8080/user-playlists">http://localhost:8080/user-playlists</a><br>
-<a href="http://localhost:8080/user-liked/0">http://localhost:8080/user-liked/{offset}</a><br>
-<a href="http://localhost:8080/create-playlist">http://localhost:8080/create-playlist</a><br>
-<input type="text" name="add-music" title="add-music" id="1"/>
-<button onclick="addMusic()">http://localhost:8080/add-music-in-playlist</button><br>
-<input type="text" name="getMusicOfPlaylist" title="get-music-of-playlist" id="2"/>
-<button onclick="getMusicsOfPlaylist()">http://localhost:8080/musics-of-playlist</button><br>
-<input type="text" name="delete-playlist" title="delete-playlist" id="3"/>
-<button onclick="deletePlaylist()">http://localhost:8080/delete-playlist</button><br>
-<br>
-<br>
-<br>
-<br>
-<p th:text="${orgSyncStatus}" id="orgSyncStatus"></p>
-<p id="org" hidden="true">Organizando...</p>
-<button><a href="http://localhost:8080/clickOrg" th:onclick="showSpin()">Org-Sync</a></button><br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<button onclick="logout()">Logout</button><br>
-
-
-<script th:inline="javascript">
-    setTimeout(() => {window.location.href="http://localhost:8080/org-sync"}, 5000)
-    function showSpin(){
-        document.getElementById("org").hidden = false;
-    }
-    addMusic = () => {
-        window.location.href = 'http://localhost:8080/add-music-in-playlist/' + document.getElementById('1').value;
-    }
-    getMusicsOfPlaylist = () => {
-        window.location.href = 'http://localhost:8080/musics-of-playlist/' + document.getElementById('2').value
-    }
-    deletePlaylist = () => {
-        window.location.href = 'http://localhost:8080/delete-playlist/' + document.getElementById('3').value
-    }
-    logout = () => {
-        window.location.href = 'http://localhost:8080/logout'
-    }
-</script>
-
-
-</body>
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
+    <style>
+        /*!
+* WickedCSS v1.0 (https://github.com/kristofferandreasen/wickedCSS)
+* Copyright 2015 Kristoffer Andreasen
+* MIT License
+*/.barrelRoll,.fadeIn,.floater,.heartbeat,.pulse,.rollerLeft,.rollerRight,.rotateIn,.rotateInLeft,.rotateInRight,.rotation,.shake,.sideToSide,.slideDown,.slideLeft,.slideRight,.slideUp,.spinner,.wiggle,.zoomer,.zoomerOut{visibility:visible!important}.rotation{animation-name:rotation;-webkit-animation-name:rotation;animation-duration:4s;-webkit-animation-duration:4s;animation-timing-function:linear;-webkit-animation-timing-function:linear;animation-iteration-count:infinite}.rotation,.sideToSide{-webkit-animation-iteration-count:infinite}@-webkit-keyframes rotation{from{-webkit-transform:rotate(0) translateX(50%) rotate(0)}to{-webkit-transform:rotate(360deg) translateX(50%) rotate(-360deg)}}@keyframes rotation{from{transform:rotate(0) translateX(50%) rotate(0)}to{transform:rotate(360deg) translateX(50%) rotate(-360deg)}}.sideToSide{animation-name:sideToSide;-webkit-animation-name:sideToSide;animation-duration:3s;-webkit-animation-duration:3s;animation-timing-function:ease;-webkit-animation-timing-function:ease;animation-iteration-count:infinite}@-webkit-keyframes sideToSide{0%,100%{-webkit-transform:translate(100%,0)}50%{-webkit-transform:translate(-100%,0)}}@keyframes sideToSide{0%,100%{transform:translate(100%,0)}50%{transform:translate(-100%,0)}}.zoomer{animation-name:zoomer;-webkit-animation-name:zoomer;-webkit-animation-duration:1s;-webkit-animation-timing-function:cubic-bezier(.5,.2,.3,1);animation-iteration-count:1}.zoomer,.zoomerOut{-webkit-animation-iteration-count:1;animation-timing-function:cubic-bezier(.5,.2,.3,1);animation-duration:1s}@-webkit-keyframes zoomer{0%{-webkit-transform:scale(.3)}100%{-webkit-transform:scale(1)}}@keyframes zoomer{0%{transform:scale(.3)}100%{transform:scale(1)}}.zoomerOut{animation-name:zoomerOut;-webkit-animation-name:zoomerOut;-webkit-animation-duration:1s;-webkit-animation-timing-function:cubic-bezier(.5,.2,.3,1);animation-iteration-count:1;animation-fill-mode:forwards}.rollerRight,.zoomerOut{-webkit-animation-fill-mode:forwards}@-webkit-keyframes zoomerOut{0%{-webkit-transform:scale(1)}100%{-webkit-transform:scale(0)}}@keyframes zoomerOut{0%{transform:scale(1)}100%{transform:scale(0)}}.spinner{animation-name:spinner;-webkit-animation-name:spinner;-webkit-animation-duration:2s;-webkit-animation-timing-function:linear;-webkit-animation-iteration-count:infinite;animation-iteration-count:infinite}.pulse,.spinner{animation-timing-function:linear;animation-duration:2s}@-webkit-keyframes spinner{from{-webkit-transform:rotate(0)}to{-webkit-transform:rotate(360deg)}}@keyframes spinner{from{transform:rotate(0)}to{transform:rotate(360deg)}}.pulse{animation-name:pulse;-webkit-animation-name:pulse;-webkit-animation-duration:2s;-webkit-animation-timing-function:linear;animation-iteration-count:infinite;-webkit-animation-iteration-count:infinite}@keyframes pulse{0%,100%{transform:scale(.9);opacity:.9}50%{transform:scale(1);opacity:1}}@-webkit-keyframes pulse{0%,100%{-webkit-transform:scale(.95);opacity:.9}50%{-webkit-transform:scale(1);opacity:1}}.shake{animation-name:shake;-webkit-animation-name:shake;-webkit-animation-duration:.4s;-webkit-animation-timing-function:ease;-webkit-animation-iteration-count:1}.barrelRoll,.shake{animation-iteration-count:1;animation-timing-function:ease;animation-duration:.4s}@keyframes shake{0%,100%{transform:translateX(0)}16%,50%,83%{transform:translateX(-10px)}33%,66%{transform:translateX(10px)}}@-webkit-keyframes shake{0%,100%{-webkit-transform:translateX(0)}16%,50%,83%{-webkit-transform:translateX(-10px)}33%,66%{-webkit-transform:translateX(10px)}}.barrelRoll{animation-name:barrelRoll;-webkit-animation-name:barrelRoll;-webkit-animation-duration:.4s;-webkit-animation-timing-function:ease;-webkit-animation-iteration-count:1}@keyframes barrelRoll{from{transform:rotate(0)}to{transform:rotate(360deg)}}@-webkit-keyframes barrelRoll{from{-webkit-transform:rotate(0)}to{-webkit-transform:rotate(360deg)}}.floater{animation-name:floater;-webkit-animation-name:floater;animation-duration:1.5s;-webkit-animation-duration:1.5s;-webkit-animation-iteration-count:infinite}.floater,.wiggle{animation-iteration-count:infinite}@keyframes floater{0%,100%{transform:translateY(0)}50%{transform:translateY(8%)}}@-webkit-keyframes floater{0%,100%{-webkit-transform:translateY(0)}50%{-webkit-transform:translateY(8%)}}.wiggle{animation-name:wiggle;-webkit-animation-name:wiggle;animation-duration:2.5s;-webkit-animation-duration:2.5s;-webkit-animation-iteration-count:infinite}@keyframes wiggle{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}@-webkit-keyframes wiggle{0%,100%{-webkit-transform:rotate(-4deg)}50%{-webkit-transform:rotate(4deg)}}.pound{animation-name:pound;-webkit-animation-name:pound;animation-duration:.5s;-webkit-animation-duration:.5s;-webkit-animation-timing-function:ease;-webkit-animation-iteration-count:infinite;visibility:visible!important}.heartbeat,.pound{animation-iteration-count:infinite;animation-timing-function:ease}@keyframes pound{to{transform:scale(1.2)}}@-webkit-keyframes pound{to{transform:scale(1.2)}}.heartbeat{animation-name:heartbeat;-webkit-animation-name:heartbeat;animation-duration:3s;-webkit-animation-duration:3s;-webkit-animation-timing-function:ease;-webkit-animation-iteration-count:infinite}@keyframes heartbeat{0%,100%{transform:scale(1)}10%{transform:scale(1.2)}20%{transform:scale(1.4)}}@-webkit-keyframes heartbeat{0%,100%{-webkit-transform:scale(1)}10%{-webkit-transform:scale(1.2)}20%{-webkit-transform:scale(1.4)}}.rollerRight{animation-name:rollerRight;-webkit-animation-name:rollerRight;animation-duration:2s;-webkit-animation-duration:2s;-webkit-animation-timing-function:ease;-webkit-animation-iteration-count:1;animation-fill-mode:forwards}.rollerLeft,.rollerRight{animation-iteration-count:1;animation-timing-function:ease}@keyframes rollerRight{0%{transform:translateX(-200px) rotate(0);opacity:0}100%{transform:translateX(0) rotate(2turn);opacity:1}}@-webkit-keyframes rollerRight{0%{-webkit-transform:translateX(-200px) rotate(0);opacity:0}100%{-webkit-transform:translateX(0) rotate(2turn);opacity:1}}.rollerLeft{animation-name:rollerLeft;-webkit-animation-name:rollerLeft;animation-duration:2s;-webkit-animation-duration:2s;-webkit-animation-timing-function:ease;-webkit-animation-iteration-count:1;animation-fill-mode:forwards}.fadeOut,.rollerLeft{-webkit-animation-fill-mode:forwards}@keyframes rollerLeft{0%{transform:translateX(200px) rotate(0);opacity:0}100%{transform:translateX(0) rotate(-2turn);opacity:1}}@-webkit-keyframes rollerLeft{0%{-webkit-transform:translateX(200px) rotate(0);opacity:0}100%{-webkit-transform:translateX(0) rotate(-2turn);opacity:1}}.slideDown{animation-name:slideDown;-webkit-animation-name:slideDown;-webkit-animation-duration:1s;-webkit-animation-timing-function:ease}.slideDown,.slideUp{animation-timing-function:ease;animation-duration:1s}@keyframes slideDown{0%{transform:translateY(-100%);opacity:0}100%{transform:translateY(0);opacity:1}}@-webkit-keyframes slideDown{0%{-webkit-transform:translateY(-100%);opacity:0}100%{-webkit-transform:translateY(0);opacity:1}}.slideUp{animation-name:slideUp;-webkit-animation-name:slideUp;-webkit-animation-duration:1s;-webkit-animation-timing-function:ease}@keyframes slideUp{0%{transform:translateY(100%);opacity:0}100%{transform:translateY(0);opacity:1}}@-webkit-keyframes slideUp{0%{-webkit-transform:translateY(100%);opacity:0}100%{-webkit-transform:translateY(0);opacity:1}}.slideLeft{animation-name:slideLeft;-webkit-animation-name:slideLeft;animation-duration:1s;-webkit-animation-duration:1s;-webkit-animation-timing-function:ease}.slideLeft,.slideRight{animation-timing-function:ease}@keyframes slideLeft{0%{transform:translateX(150%);opacity:0}100%{transform:translateX(0);opacity:1}}@-webkit-keyframes slideLeft{0%{-webkit-transform:translateX(150%);opacity:0}100%{-webkit-transform:translateX(0);opacity:1}}.slideRight{animation-name:slideRight;-webkit-animation-name:slideRight;animation-duration:1s;-webkit-animation-duration:1s;-webkit-animation-timing-function:ease}@keyframes slideRight{0%{transform:translateX(-150%);opacity:0}100%{transform:translateX(0);opacity:1}}@-webkit-keyframes slideRight{0%{-webkit-transform:translateX(-150%);opacity:0}100%{-webkit-transform:translateX(0);opacity:1}}.fadeIn{animation-name:fadeIn;-webkit-animation-name:fadeIn;-webkit-animation-duration:2s;-webkit-animation-timing-function:ease}.fadeIn,.fadeOut{animation-timing-function:ease;animation-duration:2s}@keyframes fadeIn{0%{opacity:0}100%{opacity:1}}@-webkit-keyframes fadeIn{0%{opacity:0}100%{opacity:1}}.fadeOut{animation-name:fadeOut;-webkit-animation-name:fadeOut;-webkit-animation-duration:2s;-webkit-animation-timing-function:ease;animation-fill-mode:forwards}@keyframes fadeOut{0%{opacity:1}100%{opacity:0}}@-webkit-keyframes fadeOut{0%{opacity:1}100%{opacity:0}}.rotateInRight{animation-name:rotateInRight;-webkit-animation-name:rotateInRight;animation-duration:3s;-webkit-animation-duration:3s;-webkit-animation-timing-function:ease-in-out;-webkit-animation-iteration-count:1;animation-iteration-count:1}.rotateInLeft,.rotateInRight{animation-timing-function:ease-in-out}@-webkit-keyframes rotateInRight{from{-webkit-transform:rotate(0) translateX(100%) rotate(0)}to{-webkit-transform:rotate(360deg) translateX(0) rotate(-360deg)}}@keyframes rotateInRight{from{transform:rotate(0) translateX(100%) rotate(0)}to{transform:rotate(360deg) translateX(0) rotate(-360deg)}}.rotateInLeft{animation-name:rotateInLeft;-webkit-animation-name:rotateInLeft;animation-duration:3s;-webkit-animation-duration:3s;-webkit-animation-timing-function:ease-in-out;animation-iteration-count:1}.rotateIn,.rotateInLeft{-webkit-animation-iteration-count:1}@-webkit-keyframes rotateInLeft{from{-webkit-transform:rotate(0) translateX(-100%) rotate(0)}to{-webkit-transform:rotate(360deg) translateX(0) rotate(-360deg)}}@keyframes rotateInLeft{from{transform:rotate(0) translateX(-100%) rotate(0)}to{transform:rotate(360deg) translateX(0) rotate(-360deg)}}.rotateIn{animation-name:rotateIn;-webkit-animation-name:rotateIn;animation-duration:3s;-webkit-animation-duration:3s;animation-timing-function:ease;-webkit-animation-timing-function:ease;animation-iteration-count:1;-webkit-transform-origin:center;transform-origin:center}@-webkit-keyframes rotateIn{0%{-webkit-transform:rotate3d(0,0,1,-720deg);transform:rotate3d(0,0,1,-720deg);opacity:0}100%{-webkit-transform-origin:center;transform-origin:center;-webkit-transform:none;transform:none;opacity:1}}@keyframes rotateIn{0%{-webkit-transform:rotate3d(0,0,1,-720deg);transform:rotate3d(0,0,1,-720deg);opacity:0}100%{-webkit-transform:none;transform:none;opacity:1}}.bounceIn{-webkit-animation-name:bounceIn;animation-name:bounceIn;-webkit-animation-duration:.8s;animation-duration:.8s;-webkit-animation-timing-function:cubic-bezier(.215,.61,.355,1);animation-timing-function:cubic-bezier(.215,.61,.355,1)}@-webkit-keyframes bounceIn{0%{opacity:0;-webkit-transform:scale3d(.3,.3,.3);transform:scale3d(.3,.3,.3)}20%{-webkit-transform:scale3d(1.1,1.1,1.1);transform:scale3d(1.1,1.1,1.1)}40%{-webkit-transform:scale3d(.9,.9,.9);transform:scale3d(.9,.9,.9)}60%{opacity:1;-webkit-transform:scale3d(1.03,1.03,1.03);transform:scale3d(1.03,1.03,1.03)}80%{-webkit-transform:scale3d(.97,.97,.97);transform:scale3d(.97,.97,.97)}100%{opacity:1;-webkit-transform:scale3d(1,1,1);transform:scale3d(1,1,1)}}@keyframes bounceIn{0%{opacity:0;-webkit-transform:scale3d(.3,.3,.3);transform:scale3d(.3,.3,.3)}20%{-webkit-transform:scale3d(1.1,1.1,1.1);transform:scale3d(1.1,1.1,1.1)}40%{-webkit-transform:scale3d(.9,.9,.9);transform:scale3d(.9,.9,.9)}60%{opacity:1;-webkit-transform:scale3d(1.03,1.03,1.03);transform:scale3d(1.03,1.03,1.03)}80%{-webkit-transform:scale3d(.97,.97,.97);transform:scale3d(.97,.97,.97)}100%{opacity:1;-webkit-transform:scale3d(1,1,1);transform:scale3d(1,1,1)}}
+                .centered-element {
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                }
+        </style>
+    <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+    <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <!-- Minified version -->
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
 </head>
+<body onload="onLoadInfo()">
+<!--<img th:src="@{/confetti.png}" class="centered-element" width="100%" hidden="true" id="confetti">-->
+<header>
+    <h1>
+        CRAZYLIST
+    </h1>
+    <p id="greetings"></p>
+    <nav>
+        <button onclick="logout()">Logout</button>
+    </nav>
+</header>
+<main>
+<!--    <button th:onclick="showConfetti()">confetti</button><br>-->
+    <h3>Org-Sync</h3>
+    <p class="notice">
+        <strong>Org-Sync</strong>
+        <br>
+        Este Boton te ayuda a Organizar tus musicas. Se creara una nueva playlist "Release" donde estara organizado por fecha de lanzamiento de la musica
+        tambien crea una nueva playlist cuando tienes mas de 20 musicas de un mismo idioma principal si no tienes mas de 20 musicas de cierto idioma guardaran en una playlist "OtherLanguages"
+    </p>
+    <button th:onclick="showSpinOrg()" id="btnOrg">Org-Sync</button><br>
+    <p id="org" ></p>
+    <br>
+    <h3>Migrate Musics From Local To Spotify</h3>
+    <p class="notice">
+        <strong>Migrate</strong>
+        <br>
+        Esta seccion es para "migrar" tus musicas de tu locales a Spotify para ahorrarte el trabajo de buscar cada una de tus musicas en Spotify
+    </p>
+
+
+    <div id="vinyl" hidden="true">
+        <h4> Cargando ...</h4>
+        <img th:src="@{/vinylToSpin.png}" class="spinner" width="10%">
+    </div>
+
+    <form name='upload_files' enctype="multipart/form-data">
+        Select Files: <input type="file" name="files" multiple="multiple" id="upload_files" onchange="checkContent()"/> <br />
+        <br /> <input value="Migrate" type="submit" id="btnUpload" disabled="true"/>
+        <p id="msgUploadFiles"></p>
+    </form>
+</main>
+
+
+<script th:inline="javascript">
+    let spin = false;
+
+    document.getElementById('btnUpload').addEventListener('click', (event) =>{
+        event.preventDefault();
+        var token = $('#_csrf').attr('content');
+        var header = $('#_csrf_header').attr('content');
+        document.getElementById('btnUpload').disabled = true;
+        document.getElementById("vinyl").hidden = false;
+        let somethingWasSuccesful = false;
+        setTimeout(()=> {
+            console.log('intentando hacer el post de files');
+            let files = document.getElementById('upload_files').files;
+            for (let i = 0; i < files.length; i++) {
+                let formData = new FormData();
+                formData.append("file", files[i])
+                $.ajax({
+                    method: "POST",
+                    enctype: 'multipart/form-data',
+                    url: "http://localhost:8080/upload",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    dataType: 'text',
+                    async: false,
+                    cache: false,
+                    timeout: 600000,
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                    success: function (data) {
+                        console.log('SUCCESS : archivo:' + i + ' de ' + files.length, data);
+                        somethingWasSuccesful = true;
+                    },
+                    error: function (e) {
+                        console.log('ERROR : ', e);
+
+                    }
+                });
+            }
+
+        if (somethingWasSuccesful){
+            document.getElementById('msgUploadFiles').innerHTML = "Tus musicas fueron migradas con Exito 🙂"
+        }else{
+            document.getElementById('msgUploadFiles').innerHTML = "Hubo un error al migrar las musicas 😢"
+        }
+        document.getElementById('btnUpload').disabled = false;
+        document.getElementById("vinyl").hidden = true;
+        },100);
+    })
+
+    function checkContent(){
+        if(document.getElementById('upload_files').files.length>0){
+            document.getElementById('btnUpload').disabled=false;
+        }
+    }
+
+    function showSpinUploadFiles(){
+        document.getElementById("vinyl").hidden = !document.getElementById("vinyl").hidden;
+    }
+    document.getElementById('org').innerHTML = localStorage.getItem("org-info");
+    const interval = setInterval(function() {
+        onLoadInfo();
+    }, 5000);
+    // setTimeout(() =>{window.location.reload()}, 5000)
+    function showSpinOrg(){
+        document.getElementById("org").innerHTML = 'Organizando';
+        document.getElementById('btnOrg').disabled = true;
+
+        $.ajax('http://localhost:8080/org-sync',
+            {
+                dataType: 'text', // type of response data
+                // timeout: 500,     // timeout milliseconds
+
+                success: function (data) {   // success callback function
+                    document.getElementById('org').innerHTML = data
+                    localStorage.setItem("org-info", data);
+                    document.getElementById('btnOrg').disabled = false;
+                    // console.log(data)
+                },
+                error: function (jqXhr, textStatus, errorMessage) { // error callback
+                    document.getElementById('org').innerHTML = data
+                    localStorage.setItem("org-info", data);
+                    console.log("ERROR")
+                    document.getElementById('btnOrg').disabled = false;
+                }
+            });
+    }
+
+    function onLoadInfo(){
+
+        $.ajax('http://localhost:8080/info-org-sync',
+            {
+                dataType: 'text', // type of response data
+                // timeout: 500,     // timeout milliseconds
+                success: function (data) {   // success callback function
+                    // document.getElementById("org").hidden = false;
+                    document.getElementById('org').innerHTML = data
+                    localStorage.setItem("org-info", data);
+                    if(data.includes('Organizando')){
+                        document.getElementById('btnOrg').disabled = true;
+                        // showConfetti();
+                    }else{
+                        document.getElementById('btnOrg').disabled = false;
+                    }
+
+                    // console.log(data)
+                },
+                error: function (jqXhr, textStatus, errorMessage) { // error callback
+                    // document.getElementById("org").hidden = false;
+                    document.getElementById('org').innerHTML = data
+                    localStorage.setItem("org-info", data);
+                    // console.log("ERROR")
+                }
+            });
+        if(localStorage.getItem("username") === null){
+            $.ajax('http://localhost:8080/username',
+                {
+                    dataType: 'text', // type of response data
+                    success: function (data) {   // success callback function
+                        document.getElementById('greetings').innerHTML = "Hola " + data + " 😎"
+                        localStorage.setItem("org-info", data);
+                    },
+                    error: function () { // error callback
+                        console.error("error getting username")
+                    }
+                });
+        }else{
+            document.getElementById('greetings').innerHTML = "Hola" + localStorage.getItem("username") + " 😎"
+        }
+    }
+
+
+    logout = () => {
+        localStorage.clear();
+        var token = $('#_csrf').attr('content');
+        var header = $('#_csrf_header').attr('content');
+        $.ajax({
+            method: "POST",
+            url: "http://localhost:8080/logout",
+            processData: false,
+            contentType: false,
+            dataType: 'text',
+            async: false,
+            cache: false,
+            timeout: 600000,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            success: function (data) {
+                window.location.href = 'http://localhost:8080/';
+            },
+            error: function (e) {
+                console.log('ERROR : ', e);
+
+            }
+        });
+
+        // window.location.href = 'http://localhost:8080/logout';
+    }
+</script>
+
+<!-- JQury from Google CDN -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+</body>
 </html>

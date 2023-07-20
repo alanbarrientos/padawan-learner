@@ -43,7 +43,9 @@ public class ThymeleafPages {
     MusicCacheRepository musicCacheRepository;
     @Autowired
     FailLogsRepository failLogsRepository;
-    private final String UPLOAD_FOLDER = "C:\\Users\\alanb\\DEV\\padawan-learner\\crazylist\\src\\main\\java\\balan\\codes\\crazylist\\upload";
+    @Autowired
+    ShazamService shazamService;
+    private final String UPLOAD_FOLDER = "C:\\Users\\alanb\\DEV\\padawan-learner\\crazylist\\src\\main\\java\\balan\\codes\\crazylist\\upload\\";
     @GetMapping("/")
     public String landing(Model model) {
         return "landing";
@@ -66,21 +68,27 @@ public class ThymeleafPages {
     @PostMapping("upload/files")
     public String handleFilesUpload(@RequestParam("files") MultipartFile files[], Model map) {
         StringBuilder sb = new StringBuilder();
-
+//        todo: create playlist of delocal
+        String playlistId = spotifyApi.createPlaylist("deLocal", "A playlist that contain the result of the migration of the musics to Spotify");
+        ArrayList<String> musicsToAddInPlaylist = new ArrayList<>();
         for (MultipartFile file : files) {
             if (!file.isEmpty()) {
                 try {
-                    if (!Files.exists(Paths.get(UPLOAD_FOLDER))) {
+                    if (!Files.exists(Paths.get(UPLOAD_FOLDER + spotifyApi.getUserId()))) {
                         try {
-                            Files.createDirectories(Paths.get(UPLOAD_FOLDER));
+                            Files.createDirectories(Paths.get(UPLOAD_FOLDER + spotifyApi.getUserId()));
                         } catch (IOException ioe) {
                             ioe.printStackTrace();
                         }
                     }
 
-                    Files.copy(file.getInputStream(), Paths.get(UPLOAD_FOLDER, file.getOriginalFilename()));
+                    Files.copy(file.getInputStream(), Paths.get(UPLOAD_FOLDER + spotifyApi.getUserId(), file.getOriginalFilename()));
                     sb.append("You successfully uploaded " + file.getOriginalFilename() + "!\n");
-
+                    String musicCutedPath = shazamService.cutMusic(UPLOAD_FOLDER + spotifyApi.getUserId() +"\\"+ file.getOriginalFilename());
+                    String musicName = shazamService.callShazam(musicCutedPath);
+                    String spotifyIdOfMusic = spotifyApi.getSpotifyIdOfMusic(musicName);
+                    musicsToAddInPlaylist.add(spotifyIdOfMusic);
+//                    todo: calls spotify and search music then add this music to the playlist of delocal
                     map.addAttribute("msg", sb.toString());
                 } catch (IOException | RuntimeException e) {
                     sb.append("Failued to upload " + (file != null ? file.getOriginalFilename() : "") + " => "
@@ -93,186 +101,188 @@ public class ThymeleafPages {
                 map.addAttribute("msg", sb.toString());
             }
         }
-
-        return "file";
-    }
-    @GetMapping(value = "/clickOrg")
-    public String clickedAgain(Model model){
-        String userId = spotifyApi.getUserId();
-        if(recordProcessingMap.containsKey(userId)){
-            recordProcessingMap.get(userId).setCallItAgain(true);
-        }
-        return organizeSync(model);
-    }
-
-    @GetMapping(value = "/org-sync")
-    public String organizeSync(Model model){
-        String userId = spotifyApi.getUserId();
-        if(recordProcessingMap.containsKey(userId)){
-            RecordProcessing rp = recordProcessingMap.get(userId);
-            if(rp.getEstimated().after(new Date())){
-                model.addAttribute("orgSyncStatus", (rp.getCallItAgain() ? "Organizando..." : "Tranquilizate todavia estamos procesando \uD83D\uDE21"));
-                return "home";
-            }
-            if(rp.getIsSuccessful())
-            recordProcessingMap.remove(userId);
-            model.addAttribute("orgSyncStatus", (rp.getIsSuccessful() ? "Spotify was organize successfully" : "Fail Processing previous Request"));
-            return "home";
-        }
-
-        System.out.println("-----------------------Organizando.....-----------------------------");
-        System.out.println("-----------------------Borrando Listas previas-----------------------------");
-        deletePreviusPlaylistCreatedByUs();
-
-        System.out.println("-----------------------Obteniendo todos los tracks no duplicados-----------------------------");
-        List<Track> nonDuplicatedTrackList = getNonDuplicatedTrackList(userId);
-        RecordProcessing rp = new RecordProcessing();
-        rp.setEstimated(new Date(new Date().getTime() + ESTIMATED_PER_MUSIC * nonDuplicatedTrackList.size()));
-        recordProcessingMap.put(userId, rp);
-
-        System.out.println("-----------------------Recolectado metadata de los tracks-----------------------------");
-        List<TrackEssentialMetadata> tracksEssentialMetadata = getTrackEssentialMetadata(nonDuplicatedTrackList);
-
-        System.out.println("-----------------------Ordenando por release-----------------------------");
-        List<TrackEssentialMetadata> trackEssentialMetadataInReleaseOrder = tracksEssentialMetadata.stream()
-                .sorted(Comparator.comparing(TrackEssentialMetadata::getReleaseDate).reversed()).
-                collect(Collectors.toList());
-
-        System.out.println("-----------------------Creando playlist e insertando byRelease-----------------------------");
-        String playlistReleaseId = spotifyApi.createPlaylist("cl_Release", "A Playlist that organize the song based on date of release");
-        List<String> listToInsertReleaseOrder = getListOfIdSpotifyToInsert(trackEssentialMetadataInReleaseOrder);
-        spotifyApi.insertMusic(playlistReleaseId, listToInsertReleaseOrder);
-
-
-        System.out.println("-----------------------Ordenando by language e insertando para cada lenguage significativo para el usuario-----------------------------");
-        Map<String, Integer> languagesAndCuantityOfMusics = getCuantityOfMusicsByLanguguage(trackEssentialMetadataInReleaseOrder);
-
-        List<String> idOfOtherLanguagesTracks = new ArrayList<>();
-        for (Map.Entry<String, Integer> l: languagesAndCuantityOfMusics.entrySet()) {
-            List<TrackEssentialMetadata> trackEssentialMetadataOtherLanguages;
-            if(l.getValue()<20){
-                trackEssentialMetadataOtherLanguages = trackEssentialMetadataInReleaseOrder.stream()
-                        .filter(t -> t.getLanguage().equals(l.getKey()))
-                        .collect(Collectors.toList());
-                idOfOtherLanguagesTracks.addAll(getListOfIdSpotifyToInsert(trackEssentialMetadataOtherLanguages));
-                continue;
-            }
-            insertNewLanguageIntoNewPlaylist(trackEssentialMetadataInReleaseOrder, l.getKey());
-        }
-
-        System.out.println("-----------------------Creando playlist e insertando OtherLanguages-----------------------------");
-        String playlistOtherLanguagesId = spotifyApi.createPlaylist("cl_OtherLanguages", "A Playlist that organize the song based on date of release Of Other languages");
-        spotifyApi.insertMusic(playlistOtherLanguagesId, idOfOtherLanguagesTracks);
-        model.addAttribute("orgSyncStatus", "Spotify was organize successfully");
+        spotifyApi.insertMusic(playlistId, musicsToAddInPlaylist);
         return "home";
-
     }
+//    @GetMapping(value = "/clickOrg")
+//    public String clickedAgain(Model model){
+//        String userId = spotifyApi.getUserId();
+//        if(recordProcessingMap.containsKey(userId)){
+//            recordProcessingMap.get(userId).setCallItAgain(true);
+//        }
+//        return "home";
+//    }
 
-    private static Map<String, Integer> getCuantityOfMusicsByLanguguage(List<TrackEssentialMetadata> trackEssentialMetadataInReleaseOrder) {
-        Map<String, Integer> languagesAndCuantityOfMusics = new HashMap<>();
-        for (TrackEssentialMetadata t : trackEssentialMetadataInReleaseOrder) {
-            if(!languagesAndCuantityOfMusics.containsKey(t.getLanguage())){
-                languagesAndCuantityOfMusics.put(t.getLanguage(), 0);
-            }
-            languagesAndCuantityOfMusics.put(t.getLanguage(), languagesAndCuantityOfMusics.get(t.getLanguage())+1);
-        }
-        return languagesAndCuantityOfMusics;
-    }
-
-    private List<Track> getNonDuplicatedTrackList(String userId) {
-        List<ItemFromPlaylist> playlists = spotifyApi.getUserPlaylist();
-        Set<Track> nonDuplicateTracks = new HashSet<>();
-        for (ItemFromPlaylist p: playlists  ) {
-//            if(userId.equals(p.owner.id) && !p.id.equals("1xoRekWXQAGjfetfFud8IR")){
-            if(userId.equals(p.owner.id)){
-                List<Track> trackList = spotifyApi.getMusicsFromPlaylist(p.id);
-                nonDuplicateTracks.addAll(trackList);
-            }
-        }
-        List<Track> tracksFromLiked = spotifyApi.getUserLiked();
-        nonDuplicateTracks.addAll(tracksFromLiked);
-        return new ArrayList<>(nonDuplicateTracks);
-    }
-
-    private void insertNewLanguageIntoNewPlaylist(List<TrackEssentialMetadata> trackEssentialMetadataInReleaseOrder, String languageCode) {
-        List<TrackEssentialMetadata> trackEssentialMetadata;
-        trackEssentialMetadata = trackEssentialMetadataInReleaseOrder.stream()
-                .filter(t -> t.getLanguage().equals(languageCode))
-                .collect(Collectors.toList());
-        List<String> listToInsert = getListOfIdSpotifyToInsert(trackEssentialMetadata);
-        String playlistId = spotifyApi.createPlaylist("cl_" + languageCode, "A Playlist that organize the song based on a language and date of release");
-        spotifyApi.insertMusic(playlistId, listToInsert);
-    }
-
-    private static List<String> getListOfIdSpotifyToInsert(List<TrackEssentialMetadata> trackEssentialMetadataInReleaseOrder) {
-        List<String> listToInsertReleaseOrder = new ArrayList<>();
-        for (TrackEssentialMetadata t: trackEssentialMetadataInReleaseOrder) {
-
-            listToInsertReleaseOrder.add(t.getSpotifyId());
-        }
-        return listToInsertReleaseOrder;
-    }
-
-    private List<TrackEssentialMetadata> getTrackEssentialMetadata(List<Track> nonDuplicatedTrackList) {
-        List<TrackEssentialMetadata> tracksEssentialMetadata  = new ArrayList<>();
-        int counter = 0;
-        for (Track track : nonDuplicatedTrackList) {
-            MusicCache mc = musicCacheRepository.findMusicCacheBySpotifyId(track.uri);
-            if(mc != null){
-                System.out.println(counter++);
-                if (mc.getLanguage() != null && mc.getReleaseDate() != null){
-                    tracksEssentialMetadata.add(new TrackEssentialMetadata(mc.getSpotifyId(), mc.getName(), mc.getArtist(), mc.getReleaseDate(), mc.getLanguage(), mc.getHaveLyrics()));
-                }
-                continue;
-            }
-            System.out.println(counter);
-            counter++;
-            TrackEssentialMetadata tem = getMetaDataFromInternet(track.uri, track.name, track.artists);
-            if(tem.getLanguage() != null && tem.getReleaseDate() != null){
-                tracksEssentialMetadata.add(tem);
-            }
-            if(tem.getHaveLyrics() != null){
-                musicCacheRepository.save(new MusicCache(tem.getSpotifyId(),tem.getName(), tem.getReleaseDate(), tem.getLanguage(), tem.getArtists(), tem.getHaveLyrics()));
-            }else{
-                failLogsRepository.save(new FailLogs("Music Not found", tem.toString()));
-            }
-        }
-        return tracksEssentialMetadata;
-    }
-
-    private TrackEssentialMetadata getMetaDataFromInternet(String spotifyId, String musicName, List<Artist> artists){
-        String nameOfArtists = artists.stream().map(artist -> artist.name).collect(Collectors.joining(", "));
-        TrackEssentialMetadata tem = new TrackEssentialMetadata();
-        tem.setName(musicName);
-        tem.setSpotifyId(spotifyId);
-        tem.setArtists(nameOfArtists);
-        System.out.println(tem.getName());
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        ShazamMetadata trackShazamMetadata = shazamApi.getMetadataSong(tem.getName() + " " + nameOfArtists);
-        tem.setReleaseDate(trackShazamMetadata.getReleaseDate());
-        if(trackShazamMetadata.getLyrics() != null){
-            String language = languageDetectorService.detectLanguageOfText(trackShazamMetadata.getLyrics());
-            tem.setLanguage(language);
-        }
-        tem.setHaveLyrics(trackShazamMetadata.getHaveLyrics());
-        System.out.println(tem.getReleaseDate());
-        return tem;
-    }
-
-    private void deletePreviusPlaylistCreatedByUs() {
-        List<ItemFromPlaylist> toDelete = spotifyApi.getUserPlaylist();
-        List<String> idPlaylistToDelete = toDelete.stream()
-                .filter(p -> p.name.contains("cl_")).map(p -> p.id)
-                .toList();
-
-        for (String idP: idPlaylistToDelete) {
-            spotifyApi.deletePlaylist(idP);
-        }
-    }
+//    @GetMapping(value = "/org-sync")
+//    public String organizeSync(Model model){
+//        String userId = spotifyApi.getUserId();
+//        if(recordProcessingMap.containsKey(userId)){
+//            RecordProcessing rp = recordProcessingMap.get(userId);
+//            if(rp.getEstimated().after(new Date()) && rp.getIsSuccessful()==false){
+//                model.addAttribute("orgSyncStatus", (!rp.getCallItAgain() ? "Organizando..." : "Tranquilizate todavia estamos procesando \uD83D\uDE21"));
+//                return "home";
+//            }
+//            model.addAttribute("orgSyncStatus", (rp.getIsSuccessful() ? "Spotify was organize successfully" : "Fail Processing previous Request"));
+//            recordProcessingMap.remove(userId);
+//            return "home";
+//        }
+//
+//        System.out.println("-----------------------Organizando.....-----------------------------");
+//        System.out.println("-----------------------Borrando Listas previas-----------------------------");
+//        deletePreviusPlaylistCreatedByUs();
+//
+//        System.out.println("-----------------------Obteniendo todos los tracks no duplicados-----------------------------");
+//        List<Track> nonDuplicatedTrackList = getNonDuplicatedTrackList(userId);
+//        RecordProcessing rp = new RecordProcessing();
+//        rp.setEstimated(new Date(new Date().getTime() + ESTIMATED_PER_MUSIC * nonDuplicatedTrackList.size()));
+//        recordProcessingMap.put(userId, rp);
+//
+//        System.out.println("-----------------------Recolectado metadata de los tracks-----------------------------");
+//        List<TrackEssentialMetadata> tracksEssentialMetadata = getTrackEssentialMetadata(nonDuplicatedTrackList);
+//
+//        System.out.println("-----------------------Ordenando por release-----------------------------");
+//        List<TrackEssentialMetadata> trackEssentialMetadataInReleaseOrder = tracksEssentialMetadata.stream()
+//                .sorted(Comparator.comparing(TrackEssentialMetadata::getReleaseDate).reversed()).
+//                collect(Collectors.toList());
+//
+//        System.out.println("-----------------------Creando playlist e insertando byRelease-----------------------------");
+//        String playlistReleaseId = spotifyApi.createPlaylist("cl_Release", "A Playlist that organize the song based on date of release");
+//        List<String> listToInsertReleaseOrder = getListOfIdSpotifyToInsert(trackEssentialMetadataInReleaseOrder);
+//        spotifyApi.insertMusic(playlistReleaseId, listToInsertReleaseOrder);
+//
+//
+//        System.out.println("-----------------------Ordenando by language e insertando para cada lenguage significativo para el usuario-----------------------------");
+//        Map<String, Integer> languagesAndCuantityOfMusics = getCuantityOfMusicsByLanguguage(trackEssentialMetadataInReleaseOrder);
+//
+//        List<String> idOfOtherLanguagesTracks = new ArrayList<>();
+//        for (Map.Entry<String, Integer> l: languagesAndCuantityOfMusics.entrySet()) {
+//            List<TrackEssentialMetadata> trackEssentialMetadataOtherLanguages;
+//            if(l.getValue()<20){
+//                trackEssentialMetadataOtherLanguages = trackEssentialMetadataInReleaseOrder.stream()
+//                        .filter(t -> t.getLanguage().equals(l.getKey()))
+//                        .collect(Collectors.toList());
+//                idOfOtherLanguagesTracks.addAll(getListOfIdSpotifyToInsert(trackEssentialMetadataOtherLanguages));
+//                continue;
+//            }
+//            insertNewLanguageIntoNewPlaylist(trackEssentialMetadataInReleaseOrder, l.getKey());
+//        }
+//
+//        System.out.println("-----------------------Creando playlist e insertando OtherLanguages-----------------------------");
+//        String playlistOtherLanguagesId = spotifyApi.createPlaylist("cl_OtherLanguages", "A Playlist that organize the song based on date of release Of Other languages");
+//        spotifyApi.insertMusic(playlistOtherLanguagesId, idOfOtherLanguagesTracks);
+//        RecordProcessing recordSuccesfull = recordProcessingMap.get(userId);
+//        recordSuccesfull.setIsSuccessful(true);
+//        recordProcessingMap.put(userId, recordSuccesfull);
+//        model.addAttribute("orgSyncStatus", "Spotify was organize successfully");
+//        return "home";
+//
+//    }
+//
+//    private static Map<String, Integer> getCuantityOfMusicsByLanguguage(List<TrackEssentialMetadata> trackEssentialMetadataInReleaseOrder) {
+//        Map<String, Integer> languagesAndCuantityOfMusics = new HashMap<>();
+//        for (TrackEssentialMetadata t : trackEssentialMetadataInReleaseOrder) {
+//            if(!languagesAndCuantityOfMusics.containsKey(t.getLanguage())){
+//                languagesAndCuantityOfMusics.put(t.getLanguage(), 0);
+//            }
+//            languagesAndCuantityOfMusics.put(t.getLanguage(), languagesAndCuantityOfMusics.get(t.getLanguage())+1);
+//        }
+//        return languagesAndCuantityOfMusics;
+//    }
+//
+//    private List<Track> getNonDuplicatedTrackList(String userId) {
+//        List<ItemFromPlaylist> playlists = spotifyApi.getUserPlaylist();
+//        Set<Track> nonDuplicateTracks = new HashSet<>();
+//        for (ItemFromPlaylist p: playlists  ) {
+////            if(userId.equals(p.owner.id) && !p.id.equals("1xoRekWXQAGjfetfFud8IR")){
+//            if(userId.equals(p.owner.id)){
+//                List<Track> trackList = spotifyApi.getMusicsFromPlaylist(p.id);
+//                nonDuplicateTracks.addAll(trackList);
+//            }
+//        }
+//        List<Track> tracksFromLiked = spotifyApi.getUserLiked();
+//        nonDuplicateTracks.addAll(tracksFromLiked);
+//        return new ArrayList<>(nonDuplicateTracks);
+//    }
+//
+//    private void insertNewLanguageIntoNewPlaylist(List<TrackEssentialMetadata> trackEssentialMetadataInReleaseOrder, String languageCode) {
+//        List<TrackEssentialMetadata> trackEssentialMetadata;
+//        trackEssentialMetadata = trackEssentialMetadataInReleaseOrder.stream()
+//                .filter(t -> t.getLanguage().equals(languageCode))
+//                .collect(Collectors.toList());
+//        List<String> listToInsert = getListOfIdSpotifyToInsert(trackEssentialMetadata);
+//        String playlistId = spotifyApi.createPlaylist("cl_" + languageCode, "A Playlist that organize the song based on a language and date of release");
+//        spotifyApi.insertMusic(playlistId, listToInsert);
+//    }
+//
+//    private static List<String> getListOfIdSpotifyToInsert(List<TrackEssentialMetadata> trackEssentialMetadataInReleaseOrder) {
+//        List<String> listToInsertReleaseOrder = new ArrayList<>();
+//        for (TrackEssentialMetadata t: trackEssentialMetadataInReleaseOrder) {
+//
+//            listToInsertReleaseOrder.add(t.getSpotifyId());
+//        }
+//        return listToInsertReleaseOrder;
+//    }
+//
+//    private List<TrackEssentialMetadata> getTrackEssentialMetadata(List<Track> nonDuplicatedTrackList) {
+//        List<TrackEssentialMetadata> tracksEssentialMetadata  = new ArrayList<>();
+//        int counter = 0;
+//        for (Track track : nonDuplicatedTrackList) {
+//            MusicCache mc = musicCacheRepository.findMusicCacheBySpotifyId(track.uri);
+//            if(mc != null){
+//                System.out.println(counter++);
+//                if (mc.getLanguage() != null && mc.getReleaseDate() != null){
+//                    tracksEssentialMetadata.add(new TrackEssentialMetadata(mc.getSpotifyId(), mc.getName(), mc.getArtist(), mc.getReleaseDate(), mc.getLanguage(), mc.getHaveLyrics()));
+//                }
+//                continue;
+//            }
+//            System.out.println(counter);
+//            counter++;
+//            TrackEssentialMetadata tem = getMetaDataFromInternet(track.uri, track.name, track.artists);
+//            if(tem.getLanguage() != null && tem.getReleaseDate() != null){
+//                tracksEssentialMetadata.add(tem);
+//            }
+//            if(tem.getHaveLyrics() != null){
+//                musicCacheRepository.save(new MusicCache(tem.getSpotifyId(),tem.getName(), tem.getReleaseDate(), tem.getLanguage(), tem.getArtists(), tem.getHaveLyrics()));
+//            }else{
+//                failLogsRepository.save(new FailLogs("Music Not found", tem.toString()));
+//            }
+//        }
+//        return tracksEssentialMetadata;
+//    }
+//
+//    private TrackEssentialMetadata getMetaDataFromInternet(String spotifyId, String musicName, List<Artist> artists){
+//        String nameOfArtists = artists.stream().map(artist -> artist.name).collect(Collectors.joining(", "));
+//        TrackEssentialMetadata tem = new TrackEssentialMetadata();
+//        tem.setName(musicName);
+//        tem.setSpotifyId(spotifyId);
+//        tem.setArtists(nameOfArtists);
+//        System.out.println(tem.getName());
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        ShazamMetadata trackShazamMetadata = shazamApi.getMetadataSong(tem.getName() + " " + nameOfArtists);
+//        tem.setReleaseDate(trackShazamMetadata.getReleaseDate());
+//        if(trackShazamMetadata.getLyrics() != null){
+//            String language = languageDetectorService.detectLanguageOfText(trackShazamMetadata.getLyrics());
+//            tem.setLanguage(language);
+//        }
+//        tem.setHaveLyrics(trackShazamMetadata.getHaveLyrics());
+//        System.out.println(tem.getReleaseDate());
+//        return tem;
+//    }
+//
+//    private void deletePreviusPlaylistCreatedByUs() {
+//        List<ItemFromPlaylist> toDelete = spotifyApi.getUserPlaylist();
+//        List<String> idPlaylistToDelete = toDelete.stream()
+//                .filter(p -> p.name.contains("cl_")).map(p -> p.id)
+//                .toList();
+//
+//        for (String idP: idPlaylistToDelete) {
+//            spotifyApi.deletePlaylist(idP);
+//        }
+//    }
 
 
 

@@ -3,9 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Landing</title>
+    <!-- Minified version -->
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
 </head>
 <body>
-HI THIS IS CRAZYLIST A CRAZY TOOL TO ORGANIZE AND "MIGRATE" YOU LOCAL MUSIC TO SPOTIFY
-<a th:href="@{/home}" class="btn btn-success btn-block">Login</a>
+<header>
+    <h1>CRAZYLIST</h1>
+    <nav>
+        <a th:href="@{/home}" class="current">Login</a>
+    </nav>
+</header>
+<main>
+    <h3>
+        Esta es una extension gratuita de Spotify para esos amantes de la musica que quieran tener sus musicas organizadas por fecha de lanzamiento o por idioma.
+    </h3>
+    <h3>
+        Tambien es para esas personas que tienen sus musicas descargadas y quieran "migrar" sus musicas locales a una playlist en Spotify.
+    </h3>
+</main>
 </body>
 </html>
